@@ -1,0 +1,42 @@
+[
+    {
+        "Nom": "4me Open de Vandoeuvre 2024",
+        "Adresse": "Domaine du Charmois avenue du Charmois 54500 Vandoeuvre-Les-Nancy",
+        "Date de debut": "31/08/2024",
+        "Date de fin": "03/09/2024",
+        "Nombre de rounds": "7",
+        "Commentaire du directeur": "1h30 + 30 scdes"
+    },
+    {
+        "Nom": "4me rapide Club 608",
+        "Adresse": "Salle Lecourbe Dans l'Annexe de la Mairie du XV - Paris 75015",
+        "Date de debut": "11/02/2024",
+        "Date de fin": "11/02/2024",
+        "Nombre de rounds": "9",
+        "Commentaire du directeur": "12mn + 3 scdes"
+    },
+    {
+        "Nom": "20e Bois-Colombes Chess Master",
+        "Adresse": "Complexe Sportif Albert Smirlian 11 avenue Renee 92270 Bois-Colombes",
+        "Date de debut": "26/12/2023",
+        "Date de fin": "30/12/2023",
+        "Nombre de rounds": "9",
+        "Commentaire du directeur": "1h30 + 30 scdes"
+    },
+    {
+        "Nom": "Rapide Lucien Ducret 2024 ",
+        "Adresse": "Mairie du Vesinet salle des Conferences 60 bd Carnot 78110 le Vesinet",
+        "Date de debut": "06/01/2024",
+        "Date de fin": "06/01/2024",
+        "Nombre de rounds": "9",
+        "Commentaire du directeur": "15 + Ko"
+    },
+    {
+        "Nom": "120me Open Rapide de Montreuil",
+        "Adresse": "Centre Jean Lurcat 5 place du Marche 93100 Montreuil Metro Croix de Chavaux",
+        "Date de debut": "19/01/2024",
+        "Date de fin": "19/01/2024",
+        "Nombre de rounds": "5",
+        "Commentaire du directeur": "12 + 3"
+    }
+]

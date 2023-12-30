@@ -40,4 +40,4 @@ def register_tournament():
             lp.write(',')
         json.dump(list_tournaments, lp, indent=4) 
 
-register_tournament()
+#register_tournament()

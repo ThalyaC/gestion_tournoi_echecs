@@ -76,7 +76,6 @@ def register_players_tournament():
         print("personne à inscrire :", seek_player)
         #print(liste_tournaments)
         tourmanent_register1 = create_file_folder_name(list_tournaments_nom)
-        #input("Dans quel tournoi inscrire le joueur? (Respecter l'orthographe exacte, remplacer les espaces par _):")
         tourmanent_register = 'players_'+tourmanent_register1
         tourmanent_register_case = tourmanent_register1+'/'
         try :
@@ -99,10 +98,10 @@ def register_players_tournament():
 
         list_players_tournament.append(seek_player)
 
-        with open('chess_data/'+tourmanent_register_case+tourmanent_register+'.json', 'w', encoding='utf-8') as lp:
+        with open('chess_data/'+tourmanent_register_case+tourmanent_register+'.json','w', encoding='utf-8') as lp:
             if lp.tell() > 0:
                 lp.write(',')
-            json.dump(list_players_tournament, lp, indent=4) 
+            json.dump(list_players_tournament, lp, indent=4)
 
     else:
         print("Personne ne correspond à ce numéro FFE")
