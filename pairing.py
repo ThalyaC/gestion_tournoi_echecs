@@ -83,7 +83,9 @@ def new_round():
     list_chessplayers_tournament, number_players = create_list_players_tournament(tournament_register1)
     print(f"La round {number_round} contient {number_players} joueurs.")
     list_players_round=list_chessplayers_tournament
-    list_matches = create_matches(number_round, number_of_rounds, number_players, list_players_round)    
+    list_matches, round_int = create_matches(number_round, number_of_rounds, number_players, list_players_round)
+    round_int = round_int    #variable fantôme pour le moment
+    
     """création d'une round"""
     round = Round(name_tournament=name_tournament, number_of_rounds=number_of_rounds, number_round=number_round, start_date_round=start_date_round, start_hour=start_hour, end_date_round=end_date_round, end_hour=end_hour, list_players_round=list_players_round, list_matches=list_matches)
 
@@ -96,7 +98,8 @@ def new_round():
     tourmanent_rounds_file = 'rounds_'+tournament_register1
     tourmanent_register_case = tournament_register1+'/'
 
-    with open('chess_data/'+tourmanent_register_case+ tourmanent_rounds_file+'.json', 'w', encoding='utf-8') as lp:
+    with open('chess_data/'+tourmanent_register_case+ tourmanent_rounds_file+'.json', 'a', encoding='utf-8') as lp:
+        """Attention, pour le moment, ne vérifie pas si la round est djà existante!!!"""
         if lp.tell() > 0:
             lp.write(',')
         json.dump(list_rounds, lp, indent=4)
@@ -122,9 +125,9 @@ def create_matches(number_round, number_of_rounds, number_players, list_players_
         """Creation des appariements de la premiere round de manière aléatoire"""        
         random.shuffle(list_ffe_round)
         for i in range(0, len(list_ffe_round),2):
-            list_pairing.append((list_ffe_round[i], list_ffe_round[i+1],"table"+str(n)))
+            list_pairing.append(("Blanc :"+list_ffe_round[i], "Noir :"+list_ffe_round[i+1],"table"+str(n)))
             n += 1 and n <= number_tables
-        return list_pairing
+        return list_pairing, round_int
     
     elif 1< round_int <= number_of_rounds_int:
         """ création des autres rounds en fonction des résultats des joueurs"""
@@ -134,11 +137,27 @@ def create_matches(number_round, number_of_rounds, number_players, list_players_
         print("Cette round n'existe pas")
         return None
 
+def score_recording():
+    """Enregistrer les scores"""
+    tournament_register1, name_tournament1, number_of_rounds = which_tournament()
+    number_round_score = input ("Dans quelle round souhaitez-vous enregistrer un score?")
+    previous_round2 = int(number_round_score)-1
+    previous_round1 = str(previous_round2)
+    table_score = input ("Quelle table? (tapez juste un numéro)")
+    
+    with open('chess_data/'+tournament_register1+'/rounds_'+tournament_register1+'.json', 'r') as lp:
+        list_info_current_tournament = json.load(lp)
+    
+    for previous_round in list_info_current_tournament:
+        if previous_round.get("Round")==previous_round1:
+            print(previous_round)
+    
 
 
 #create_matches()
 
-new_round()
+#new_round()
 
 #x = 24//2+24%2
 #print(x)
+score_recording()
