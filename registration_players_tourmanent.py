@@ -35,7 +35,7 @@ def create_file_folder_name(list_tournaments):
         name_tournament=list_tournaments[choice_user - 1]
         print("Vous avez choisi le tournoi :", name_tournament)
         name_tournament_file_folder = name_tournament.replace(" ","_")
-        return name_tournament_file_folder
+        return name_tournament, name_tournament_file_folder
 
     else :
         return print("erreur de saisie")
@@ -75,7 +75,7 @@ def register_players_tournament():
     if seek_player:
         print("personne à inscrire :", seek_player)
         #print(liste_tournaments)
-        tourmanent_register1 = create_file_folder_name(list_tournaments_nom)
+        _, tourmanent_register1 = create_file_folder_name(list_tournaments_nom)
         tourmanent_register = 'players_'+tourmanent_register1
         tourmanent_register_case = tourmanent_register1+'/'
         try :
