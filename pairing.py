@@ -143,11 +143,13 @@ def create_matches(number_round, number_of_rounds, number_players, list_players_
         return None
 
 def score_recording():
-    """Enregistrer les scores"""
+    """Enregistrer les scores pour les appariements puis pour les joueurs individuellement"""
     tournament_register1, _, _ = which_tournament()
     number_round_score1 = input ("Dans quelle round souhaitez-vous enregistrer un score?")
-    table_score1 = input ("Quelle table? (tapez juste un numéro)")
-    table_score = "table"+table_score1
+    table_score2 = input ("Quelle table? (tapez juste un numéro)")
+    table_score1 = "table" + table_score2
+    table_score = str(table_score1)
+    print("1.",table_score)
     
     with open('chess_data/'+tournament_register1+'/rounds_'+tournament_register1+'.json', 'r') as lp:
         list_info_current_tournament = json.load(lp)
@@ -155,21 +157,39 @@ def score_recording():
     for number_round_score in list_info_current_tournament:
         if number_round_score.get("Round")==number_round_score1:
             list_pairing = number_round_score['Liste des appariements']
-            print(list_pairing)
-            for table, tables in enumerate(list_pairing):
-                if table_score in tables:
-                    requested_table1 = table
-                    requested_table = list_pairing[requested_table1]
+            print("2;",list_pairing, len(list_pairing))
+            info_pairing = list_pairing[int(table_score2)-1]
+            print(info_pairing)
+            add_score1 = input("Entrez le score (1-0,0-1 ou X-X)")
+            add_score = "Score :"+add_score1
+            info_pairing.append(add_score)
+            requested_table=info_pairing
+            print(requested_table)
+    
+    with open('chess_data/'+tournament_register1+'/rounds_'+tournament_register1+'.json', 'w') as lp:
+        json.dump(list_info_current_tournament, lp, indent=4)
+        
+        
+        """for info_pairing in list_pairing:
+                print("3.",info_pairing)
+                if table_score in info_pairing:
+                    #requested_table1 = tables
+                    #requested_table = list_pairing[requested_table1]
+                    add_score1 = input("Entrez le score (1-0,0-1 ou X-X)")
+                    add_score = "Score :"+add_score1
+                    #requested_table.append(add_score)
+                    info_pairing.append(add_score)
+                    requested_table=info_pairing
+                    print(requested_table)
                     break
                 else:
                     print("Cette table n'existe pas")
                     return None
-            print(requested_table)
-            add_score1 = input("Entrez le score (1-0,0-1 ou X-X)")
-            add_score = "Score :"+add_score1
-            requested_table.append(add_score)
-    
             #print(requested_table)
+            
+    
+            #individual_score1 = add_score.split("-")
+            #print(individual_score1)
     
     with open('chess_data/'+tournament_register1+'/rounds_'+tournament_register1+'.json', 'w') as lp:
         json.dump(list_info_current_tournament, lp, indent=4)
@@ -180,7 +200,7 @@ def score_recording():
 
 
     
-"""def score_recording():
+def score_recording():
     Enregistrer les scores
     tournament_register1, name_tournament1, number_of_rounds = which_tournament()
     number_round_score = input ("Dans quelle round souhaitez-vous enregistrer un score?")
