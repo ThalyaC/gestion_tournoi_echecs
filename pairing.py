@@ -6,7 +6,7 @@ import random
 
 class Round:
     "création d'un round"
-    def __init__(self, name_tournament, number_of_rounds, number_round, start_date_round, end_date_round,start_hour, end_hour, list_players_round):
+    def __init__(self, name_tournament, number_of_rounds, number_round, start_date_round, end_date_round,start_hour, end_hour, list_players_round, list_matches):
         self.name_tournament=name_tournament
         self.number_of_rounds=number_of_rounds
         self.number_round = number_round
@@ -15,7 +15,7 @@ class Round:
         self.start_hour = start_hour #automatique (import datatime p267)
         self.end_hour = end_hour
         self.list_players_round = list_players_round
-        self.list_matches= []
+        self.list_matches= list_matches
 
     def add_match(self, match):
         """Ajoute un match au round en cours de création"""
@@ -38,10 +38,10 @@ def which_tournament():
     2. récupère les éléments nécessaires à la création d'une round"""
     list_tournaments = open_list_tournaments()
     list_tournaments_name = [element["Nom"] for element in list_tournaments]
-    tournament_register1 = create_file_folder_name(list_tournaments_name)
+    name_tournament1, tournament_register1 = create_file_folder_name(list_tournaments_name)
     
     """nom du tournoi"""
-    name_tournament1 = tournament_register1.replace("_"," ")
+    #name_tournament1 = tournament_register1.replace("_"," ")
 
     for tournament in list_tournaments:
         """Donne le nombre de rounds contenus dans le tournoi demandé"""
@@ -53,7 +53,8 @@ def which_tournament():
 def create_list_players_tournament(tournament_register1):
     
     """Crée une liste de joueurs à partir 
-    du fichier players du tournoi choisi par l'utilisateur"""
+    du fichier players du tournoi choisi par l'utilisateur
+    Attention : ne peut fonctionner seule"""
     tournament_register_players = 'players_'+tournament_register1
     tournament_register_case = tournament_register1+'/'
     
@@ -65,7 +66,6 @@ def create_list_players_tournament(tournament_register1):
     
     return list_chessplayers_tournament, number_players
 
-#create_list_players_tournament()
 
 def new_round():
         
@@ -80,11 +80,12 @@ def new_round():
     start_hour = input("Veuillez entrer l'heure exacte du début de la round :")
     end_date_round = ("")
     end_hour = ("")
-    list_chessplayers_tournament,_=create_list_players_tournament(tournament_register1)
+    list_chessplayers_tournament, number_players = create_list_players_tournament(tournament_register1)
+    print(f"La round {number_round} contient {number_players} joueurs.")
     list_players_round=list_chessplayers_tournament
-        
+    list_matches = create_matches(number_round, number_of_rounds, number_players, list_players_round)    
     """création d'une round"""
-    round = Round(name_tournament=name_tournament, number_of_rounds=number_of_rounds, number_round=number_round, start_date_round=start_date_round, start_hour=start_hour, end_date_round=end_date_round, end_hour=end_hour, list_players_round=list_players_round)
+    round = Round(name_tournament=name_tournament, number_of_rounds=number_of_rounds, number_round=number_round, start_date_round=start_date_round, start_hour=start_hour, end_date_round=end_date_round, end_hour=end_hour, list_players_round=list_players_round, list_matches=list_matches)
 
     info_round={"Nom du tournoi" : round.name_tournament, "Nombre de rounds" : round.number_of_rounds, "Round": round.number_round, "Date de lancement":round.start_date_round, "Heure de lancement":round.start_hour, "Date de fin":round.end_date_round, "Fin de la round":round.end_hour, "Liste des appariements":round.list_matches, "Liste des joueurs":round.list_players_round}
 
@@ -102,26 +103,42 @@ def new_round():
         
     return number_round, tournament_register1
 
-new_round()
 
-def create_matches():
-    new_round()
 
-    round = round.number_round
-    print("Nom de la round :",round)
-    list_chessplayers_tournament, number_players = create_list_players_tournament()
-
-    round_int=int(round)
-    list_ffe_tournament =[]
-
+def create_matches(number_round, number_of_rounds, number_players, list_players_round):
+    #round = round.number_round
+    #print("Nom de la round :",round)
+    #list_chessplayers_tournament, _ = create_list_players_tournament()
+    round_int = int(number_round)
+    number_of_rounds_int = int(number_of_rounds)
+    number_players_int = int(number_players)
+    number_tables = number_players_int//2+number_players%2
+    list_ffe_round =[]
+    list_pairing = [] 
+    list_ffe_round = [element["Numero FFE"] for element in list_players_round]
+    n = 1
+    
     if round_int==1:
-        """Creation des appariements de la premiere round de manière aléatoire"""
-        
-        list_ffe_tournament = [element["Numero FFE"] for element in list_chessplayers_tournament]
-        random.shuffle(list_ffe_tournament)
-    print(list_ffe_tournament)
+        """Creation des appariements de la premiere round de manière aléatoire"""        
+        random.shuffle(list_ffe_round)
+        for i in range(0, len(list_ffe_round),2):
+            list_pairing.append((list_ffe_round[i], list_ffe_round[i+1],"table"+str(n)))
+            n += 1 and n <= number_tables
+        return list_pairing
+    
+    elif 1< round_int <= number_of_rounds_int:
+        """ création des autres rounds en fonction des résultats des joueurs"""
+        pass
+
+    else :
+        print("Cette round n'existe pas")
+        return None
+
+
 
 #create_matches()
 
-#new_round()
+new_round()
 
+#x = 24//2+24%2
+#print(x)
