@@ -125,8 +125,13 @@ def create_matches(number_round, number_of_rounds, number_players, list_players_
         """Creation des appariements de la premiere round de manière aléatoire"""        
         random.shuffle(list_ffe_round)
         for i in range(0, len(list_ffe_round),2):
-            list_pairing.append(("Blanc :"+list_ffe_round[i], "Noir :"+list_ffe_round[i+1],"table"+str(n)))
-            n += 1 and n <= number_tables
+            if i + 1 < len(list_ffe_round):
+                list_pairing.append(("Blanc :"+list_ffe_round[i], "Noir :"+list_ffe_round[i+1],"table"+str(n)))
+            else:
+                list_pairing.append(("Blanc :"+list_ffe_round[i], "Noir : exempt","table"+str(n)))
+            n += 1
+            if n > number_tables:
+                break
         return list_pairing, round_int
     
     elif 1< round_int <= number_of_rounds_int:
@@ -139,6 +144,44 @@ def create_matches(number_round, number_of_rounds, number_players, list_players_
 
 def score_recording():
     """Enregistrer les scores"""
+    tournament_register1, _, _ = which_tournament()
+    number_round_score1 = input ("Dans quelle round souhaitez-vous enregistrer un score?")
+    table_score1 = input ("Quelle table? (tapez juste un numéro)")
+    table_score = "table"+table_score1
+    
+    with open('chess_data/'+tournament_register1+'/rounds_'+tournament_register1+'.json', 'r') as lp:
+        list_info_current_tournament = json.load(lp)
+    
+    for number_round_score in list_info_current_tournament:
+        if number_round_score.get("Round")==number_round_score1:
+            list_pairing = number_round_score['Liste des appariements']
+            print(list_pairing)
+            for table, tables in enumerate(list_pairing):
+                if table_score in tables:
+                    requested_table1 = table
+                    requested_table = list_pairing[requested_table1]
+                    break
+                else:
+                    print("Cette table n'existe pas")
+                    return None
+            print(requested_table)
+            add_score1 = input("Entrez le score (1-0,0-1 ou X-X)")
+            add_score = "Score :"+add_score1
+            requested_table.append(add_score)
+    
+            #print(requested_table)
+    
+    with open('chess_data/'+tournament_register1+'/rounds_'+tournament_register1+'.json', 'w') as lp:
+        json.dump(list_info_current_tournament, lp, indent=4)
+
+
+
+            
+
+
+    
+"""def score_recording():
+    Enregistrer les scores
     tournament_register1, name_tournament1, number_of_rounds = which_tournament()
     number_round_score = input ("Dans quelle round souhaitez-vous enregistrer un score?")
     previous_round2 = int(number_round_score)-1
@@ -150,11 +193,10 @@ def score_recording():
     
     for previous_round in list_info_current_tournament:
         if previous_round.get("Round")==previous_round1:
-            print(previous_round)
-    
-
+            print(previous_round)"""
 
 #create_matches()
+
 
 #new_round()
 
