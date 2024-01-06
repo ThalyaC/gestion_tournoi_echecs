@@ -99,4 +99,4 @@ def register_player():
             json.dump(list_chessplayers, lp, indent=4) 
 
 
-register_player()
+#register_player()
