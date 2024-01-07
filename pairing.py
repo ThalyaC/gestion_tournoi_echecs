@@ -6,7 +6,7 @@ import random
 
 class Round:
     "création d'un round"
-    def __init__(self, name_tournament, number_of_rounds, number_round, start_date_round, end_date_round,start_hour, end_hour, list_players_round, list_matches):
+    def __init__(self, name_tournament, number_of_rounds, number_round, start_date_round, end_date_round,start_hour, end_hour, list_players_round, list_matches, number_tables):
         self.name_tournament=name_tournament
         self.number_of_rounds=number_of_rounds
         self.number_round = number_round
@@ -16,6 +16,7 @@ class Round:
         self.end_hour = end_hour
         self.list_players_round = list_players_round
         self.list_matches= list_matches
+        self.number_tables = number_tables
 
     def add_match(self, match):
         """Ajoute un match au round en cours de création"""
@@ -83,13 +84,12 @@ def new_round():
     list_chessplayers_tournament, number_players = create_list_players_tournament(tournament_register1)
     print(f"La round {number_round} contient {number_players} joueurs.")
     list_players_round=list_chessplayers_tournament
-    list_matches, round_int = create_matches(number_round, number_of_rounds, number_players, list_players_round)
-    round_int = round_int    #variable fantôme pour le moment
-    
+    list_matches, number_tables = create_matches(number_round, number_of_rounds, number_players, list_players_round)
+        
     """création d'une round"""
-    round = Round(name_tournament=name_tournament, number_of_rounds=number_of_rounds, number_round=number_round, start_date_round=start_date_round, start_hour=start_hour, end_date_round=end_date_round, end_hour=end_hour, list_players_round=list_players_round, list_matches=list_matches)
+    round = Round(name_tournament=name_tournament, number_of_rounds=number_of_rounds, number_round=number_round, start_date_round=start_date_round, start_hour=start_hour, end_date_round=end_date_round, end_hour=end_hour, list_players_round=list_players_round, list_matches=list_matches, number_tables=number_tables)
 
-    info_round={"Nom du tournoi" : round.name_tournament, "Nombre de rounds" : round.number_of_rounds, "Round": round.number_round, "Date de lancement":round.start_date_round, "Heure de lancement":round.start_hour, "Date de fin":round.end_date_round, "Fin de la round":round.end_hour, "Liste des appariements":round.list_matches, "Liste des joueurs":round.list_players_round}
+    info_round={"Nom du tournoi" : round.name_tournament, "Nombre de rounds" : round.number_of_rounds, "Round": round.number_round, "Date de lancement":round.start_date_round, "Heure de lancement":round.start_hour, "Round finie le":round.end_date_round, "Heure de fin":round.end_hour, "Nombre de tables en cours de jeu":round.number_tables, "Liste des appariements":round.list_matches, "Liste des joueurs":round.list_players_round}
 
     """Enregistrement des infos de la round dans le fichier round du tournoi"""
     #list_rounds=[]
@@ -182,14 +182,14 @@ def create_matches(number_round, number_of_rounds, number_players, list_players_
             n += 1
             if n > number_tables:
                 break
-        return list_pairing, round_int
+        return list_pairing, number_tables
     
     elif 1 < round_int <= number_of_rounds_int:
         """ création des autres rounds en fonction des résultats des joueurs"""
         #key_score = "score"
         #list_sorted_by_score = sorted(list_players_round, key=lambda x: x["score"])
         #create_pair(list_sorted_by_score, list_players_round, number_tables)
-        #return list_pairing, round_int
+        #return list_pairing, number_tables
         pass
 
 
@@ -208,8 +208,15 @@ def score_recording():
     
     with open('chess_data/'+tournament_register1+'/rounds_'+tournament_register1+'.json', 'r') as lp:
         list_info_current_tournament = json.load(lp)
+      
     
     for number_round_score in list_info_current_tournament:
+        """Pour accéder à la round demandée"""
+        
+        """Nombre de tables à enregistrer"""
+        remaining_tables1 = number_round_score["Nombre de tables en cours de jeu"]
+        print(f"Il reste {remaining_tables1} table(s) à enregistrer")
+        
         if number_round_score.get("Round")==number_round_score1:
 
             """inscription des scores dans la liste d'appariement"""
@@ -221,7 +228,20 @@ def score_recording():
             add_score = "Score :"+add_score1
             info_pairing.append(add_score)
             requested_table=info_pairing
-            print(requested_table)
+            print("12.",requested_table)
+            
+            """Mise à jour du nombre de tables"""
+            number_round_score["Nombre de tables en cours de jeu"] = remaining_tables1-1
+
+            """Création automatique de la date et heure de fin de la round"""
+            remaining_tables = number_round_score["Nombre de tables en cours de jeu"]
+            if remaining_tables==0 :
+                pass
+
+
+
+
+            
 
             """inscription et modification des scores dans la liste des joueurs"""
             individual_score = add_score1.split("-")
@@ -301,7 +321,7 @@ def score_recording():
 #create_matches()
 
 
-new_round()
+#new_round()
 
 #x = 24//2+24%2
 #print(x)
