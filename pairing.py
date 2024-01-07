@@ -2,6 +2,7 @@
 import json
 from registration_players_tourmanent import open_list_tournaments, create_file_folder_name, seek_player_ffe
 import random
+from datetime import datetime
 
 
 class Round:
@@ -144,6 +145,7 @@ def create_pair(list_ffe_round, list_players_round, number_tables):
 """
 
 def create_matches(number_round, number_of_rounds, number_players, list_players_round):
+    """Création des matches"""
     #round = round.number_round
     #print("Nom de la round :",round)
     #list_chessplayers_tournament, _ = create_list_players_tournament()
@@ -163,15 +165,23 @@ def create_matches(number_round, number_of_rounds, number_players, list_players_
         #create_pair(list_ffe_round, list_players_round, number_tables)
         
         for i in range(0, len(list_ffe_round),2):
+            """Création d'un match simple"""
             if i + 1 < len(list_ffe_round):
                 list_pairing.append(("Blanc :"+list_ffe_round[i], "Noir :"+list_ffe_round[i+1],"table"+str(n)))
             else:
+                """Si le nombre de joueurs est impair, création d'une dernière table avec un joueur exempté, 
+                enregistrement automatique du score 0.5-_ """
                 list_pairing.append(("Blanc :"+list_ffe_round[i], "Noir : exempt","table"+str(n), "score :0.5-_"))
                 player1_ffe = list_ffe_round[i]
                 print("player1",player1_ffe)
                 score_player1_3 = 0.5
                 #key_score = "score"
                 key_ffe = "Numero FFE"
+
+                """Soustraction automatique de ce match au nombre de tables en jeu"""
+                number_tables = number_tables-1
+
+                "Ajout automatique de 0.5 point au joueur exempté"
                 for player_round in list_players_round:
                     if key_ffe in player_round and player_round[key_ffe] == player1_ffe:
                         player_exempt = player_round
@@ -198,7 +208,10 @@ def create_matches(number_round, number_of_rounds, number_players, list_players_
         return None
 
 def score_recording():
-    """Enregistrer les scores pour les appariements puis pour les joueurs individuellement"""
+    
+    """Enregistrer les scores pour les appariements, 
+    mise à jour du nombre de matches restants,
+    puis pour les joueurs individuellement"""
     tournament_register1, _, _ = which_tournament()
     number_round_score1 = input ("Dans quelle round souhaitez-vous enregistrer un score?")
     table_score2 = input ("Quelle table? (tapez juste un numéro)")
@@ -236,12 +249,12 @@ def score_recording():
             """Création automatique de la date et heure de fin de la round"""
             remaining_tables = number_round_score["Nombre de tables en cours de jeu"]
             if remaining_tables==0 :
-                pass
+                end_round = datetime.now()
+                date_end = end_round.strftime("%d.%m.%y")
+                hour_end = end_round.strftime("%H.%M")
+                number_round_score["Heure de fin"] = hour_end
+                number_round_score["Round finie le"] = date_end
 
-
-
-
-            
 
             """inscription et modification des scores dans la liste des joueurs"""
             individual_score = add_score1.split("-")
@@ -325,4 +338,4 @@ def score_recording():
 
 #x = 24//2+24%2
 #print(x)
-#score_recording()
+score_recording()
