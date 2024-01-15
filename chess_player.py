@@ -3,11 +3,11 @@ import json
 
 class ChessPlayer:
     """un joueur d'échecs"""
-    
-    
+
+      
     def __init__(self, name, first_name, date_of_birth, ffe_number):
         """
-        Identité du joueur. 
+        Identité du joueur (ffe, nom, prénom, date de naissance). 
         ffe_number : 
         numéro de licence de la Fédération Française des Echecs
         """
@@ -15,6 +15,8 @@ class ChessPlayer:
         self.name = name
         self.first_name = first_name
         self.date_of_birth = date_of_birth
+
+        #ChessPlayer._player_data[self.player_id] = {"Nom" : self.name, "Prenom" : self.first_name, "Date de naissance": self.date_of_birth, "Numero FFE":self.ffe_number} #
         
 
 # print(ChessPlayer.players_created)
@@ -99,4 +101,4 @@ def register_player():
             json.dump(list_chessplayers, lp, indent=4) 
 
 
-#register_player()
+register_player()
