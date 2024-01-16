@@ -1,13 +1,15 @@
 import json
 from os import mkdir
+from chess_player import register_player
 
-"""Pour le moment, seuls les joueurs enregistrés dans la base de données du club peuvent être inscrits, à élargir plus tard """
 
 def seek_player_ffe(list_chessplayers,ffe_number_register):
     """Trouver un joueur à partir de son numéro FFE"""
     for player in list_chessplayers:
         if player.get("Numero FFE")==ffe_number_register:
             return player
+       
+
     return None
 
 def list_of_numbered_tournaments(liste_tournaments):
@@ -93,10 +95,15 @@ def register_players_tournament():
                 pass
         
         """Pour ajouter au profil du joueur un score initial = 0"""
-        score = 'score'
-        seek_player[score] = 0
+        
+        player_tournament = {} #
+        player_tournament['Numero FFE'] = seek_player['Numero FFE'] #
+        player_tournament ['score'] = 0
+        # score = 'score'
+        # seek_player[score] = 0
 
-        list_players_tournament.append(seek_player)
+        #list_players_tournament.append(seek_player)
+        list_players_tournament.append(player_tournament)
 
         with open('chess_data/'+tourmanent_register_case+tourmanent_register+'.json','w', encoding='utf-8') as lp:
             if lp.tell() > 0:
@@ -104,6 +111,40 @@ def register_players_tournament():
             json.dump(list_players_tournament, lp, indent=4)
 
     else:
-        print("Personne ne correspond à ce numéro FFE")
+        """print("Personne ne correspond à ce numéro FFE")
+         """
+        print("Ce joueur n'est pas enregistré dans la base du club.")
+        response = input("Souhaitez-vous l'enregistrer? (Y pour oui/N pour non)")
+        if response == "Y":
+            register_player()
+            register_players_tournament()
+        else :
+            return print("Fin")
+            
+def display_on_screen_players_tournament():
+    """Afficher à l'écran, la liste de joueurs inscrits à un tournoi"""
+    list_tournaments = open_list_tournaments()
+    list_tournaments_nom = [element["Nom"] for element in list_tournaments]
+    _, tourmanent_register1 = create_file_folder_name(list_tournaments_nom)
+    tourmanent_register = 'players_'+tourmanent_register1
+    tourmanent_register_case = tourmanent_register1+'/'
+    with open('chess_data/'+tourmanent_register_case+tourmanent_register+'.json', 'r') as lp:
+        list_players_tournament = json.load(lp)
+    
+    list_players_tournament_ffe = [element['Numero FFE'] for element in list_players_tournament]
+    list_chess_players = open_list_chessplayers()
+    for player_tournament_ffe1 in list_players_tournament_ffe:
+        player_tournament_ffe = seek_player_ffe(list_chess_players, player_tournament_ffe1)
+        # manque le score
+        
+        print(player_tournament_ffe["Numero FFE"], player_tournament_ffe["Nom"], player_tournament_ffe["Prenom"])
+        
+        #score_player = player_tournament_ffe1['score']
+        #print(player_tournament_ffe.append(score_player))
+        #print(score_player)
 
+
+
+
+display_on_screen_players_tournament()
 #register_players_tournament()
