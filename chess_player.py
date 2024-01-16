@@ -3,8 +3,7 @@ import json
 
 class ChessPlayer:
     """un joueur d'échecs"""
-
-      
+  
     def __init__(self, name, first_name, date_of_birth, ffe_number):
         """
         Identité du joueur (ffe, nom, prénom, date de naissance). 
@@ -16,10 +15,6 @@ class ChessPlayer:
         self.first_name = first_name
         self.date_of_birth = date_of_birth
 
-        #ChessPlayer._player_data[self.player_id] = {"Nom" : self.name, "Prenom" : self.first_name, "Date de naissance": self.date_of_birth, "Numero FFE":self.ffe_number} #
-        
-
-# print(ChessPlayer.players_created)
   
 def validate_format_ffe_number(ffe_number):
     """1. vérifie le format du numéro de licence type : AB12345"""
@@ -54,7 +49,6 @@ def check_old_number_ffe(list_chessplayers, ffe_number):
                     new_ffe_number_last=validate_format_ffe_number(new_ffe_number)
                     if new_ffe_number_last:
                         ffe_number1= new_ffe_number_last
-                        #check_old_number_ffe(list_chessplayers, new_ffe_number)
                         break
             
         else:     
@@ -65,14 +59,13 @@ def check_old_number_ffe(list_chessplayers, ffe_number):
         print("1 Le numéro de licence va être enregistré")
         return ffe_number1
     
-
-            
+ 
 def ffe_check (list_chessplayers):
     ffe_number = input("Numéro de licence (du type AB12345) :")
     resultat=check_old_number_ffe(list_chessplayers, validate_format_ffe_number(ffe_number))
-    #breakpoint()
     return resultat
     
+
 def register_player():
     """Création d'un joueur d'échecs en vérifiant le numéro FFE"""         
     with open('chess_data/list_players1.json', 'r') as lp:
@@ -101,4 +94,4 @@ def register_player():
             json.dump(list_chessplayers, lp, indent=4) 
 
 
-register_player()
+#register_player()
