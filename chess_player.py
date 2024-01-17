@@ -52,7 +52,7 @@ def check_old_number_ffe(list_chessplayers, ffe_number):
             
         else:     
             print("Le numéro de licence va être enregistré")
-        return ffe_number1
+            return ffe_number1
 
     # Si le fichier n'existe pas encore     
     except FileNotFoundError:
@@ -94,4 +94,23 @@ def register_player():
             json.dump(list_chessplayers, lp, indent=4) 
 
 
+def display_on_screen_players_club():
+    
+    """Afficher à l'écran, par ordre alphabétique, la base des joueurs du club"""
+    with open('chess_data/list_players1.json', 'r') as lp:
+        list_chessplayers_screen = json.load(lp)
+    
+    screen_players = []
+    for chess_player_screen in list_chessplayers_screen:             
+        chess_player_screen1 = (chess_player_screen["Numero FFE"], chess_player_screen["Nom"], chess_player_screen["Prenom"], chess_player_screen["Date de naissance"])
+        screen_players.append(chess_player_screen1)
+    
+    screen_players_alpha = sorted(screen_players, key=lambda x: x[1])
+
+    print("Nombre de joueurs enregistrés :", len(screen_players_alpha))
+
+    for screen_player in screen_players_alpha:
+        print(*screen_player)
+
 register_player()
+#display_on_screen_players_club()
