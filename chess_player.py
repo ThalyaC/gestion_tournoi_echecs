@@ -30,10 +30,10 @@ def validate_format_ffe_number(ffe_number):
 
 
 def check_old_number_ffe(list_chessplayers, ffe_number):
-    """2. vérifie si le numéro existe déjà dans la liste des joueurs"""
+    """2. vérifie si le numéro FFE existe déjà dans la liste des joueurs"""
     try:
         liste_ffe_number=[element["Numero FFE"] for element in list_chessplayers]
-        print(liste_ffe_number)
+        print(sorted(liste_ffe_number))
         ffe_number1= str(ffe_number)
         print(ffe_number1)
         
@@ -42,10 +42,9 @@ def check_old_number_ffe(list_chessplayers, ffe_number):
                 new_ffe_number = input("Ce numéro a déjà été enregistré. Nouveau numéro FFE (ou appuyer sur Entrée pour terminer):")
                         
                 if not new_ffe_number:
-                    print("Fin d'enregistrement")
                     return None
-  
-                else:
+                
+                elif new_ffe_number not in liste_ffe_number:
                     new_ffe_number_last=validate_format_ffe_number(new_ffe_number)
                     if new_ffe_number_last:
                         ffe_number1= new_ffe_number_last
@@ -54,9 +53,10 @@ def check_old_number_ffe(list_chessplayers, ffe_number):
         else:     
             print("Le numéro de licence va être enregistré")
         return ffe_number1
-         
+
+    # Si le fichier n'existe pas encore     
     except FileNotFoundError:
-        print("1 Le numéro de licence va être enregistré")
+        print("Le numéro de licence va être enregistré")
         return ffe_number1
     
  
@@ -94,4 +94,4 @@ def register_player():
             json.dump(list_chessplayers, lp, indent=4) 
 
 
-#register_player()
+register_player()
