@@ -127,27 +127,33 @@ def register_players_tournament():
            
 def display_on_screen_players_tournament():
     
-    """Afficher à l'écran, par ordre alphabétique, la liste de joueurs inscrits à un tournoi"""
+    """Afficher à l'écran, par ordre alphabétique ou de classement, la liste de joueurs inscrits à un tournoi"""
     list_tournaments = open_list_tournaments()
     list_tournaments_nom = [element["Nom"] for element in list_tournaments]
-    _, tourmanent_register1 = create_file_folder_name(list_tournaments_nom)
-    tourmanent_register = 'players_'+tourmanent_register1
-    tourmanent_register_case = tourmanent_register1+'/'
-    with open('chess_data/'+tourmanent_register_case+tourmanent_register+'.json', 'r') as lp:
+    _, tournament_register1 = create_file_folder_name(list_tournaments_nom)
+    tournament_register = 'players_'+tournament_register1
+    tournament_register_case = tournament_register1+'/'
+    with open('chess_data/'+tournament_register_case+tournament_register+'.json', 'r') as lp:
         list_players_tournament = json.load(lp)
-    
+    #print(list_players_tournament)
     screen_players = []
     list_players_tournament_ffe = [element['Numero FFE'] for element in list_players_tournament]
     list_chess_players = open_list_chessplayers()
     for player_tournament_ffe1 in list_players_tournament_ffe:
+        player_tournament_ffe2 = seek_player_ffe(list_players_tournament, player_tournament_ffe1)
         player_tournament_ffe = seek_player_ffe(list_chess_players, player_tournament_ffe1)
-        for player_tournament_ffe1 in list_players_tournament:
-            score1 = player_tournament_ffe1['score']
+        #for player_tournament_ffe1 in list_players_tournament:
+            #score1 = 
+            #player_tournament_ffe2 = seek_player_ffe(list_players_tournament, player_tournament_ffe1)
                 
-        screen_player1 = (player_tournament_ffe["Numero FFE"], player_tournament_ffe["Nom"], player_tournament_ffe["Prenom"], score1)
+        screen_player1 = (player_tournament_ffe["Numero FFE"], player_tournament_ffe["Nom"], player_tournament_ffe["Prenom"], player_tournament_ffe2['score'])
         screen_players.append(screen_player1)
     
-    screen_players_alpha = sorted(screen_players, key=lambda x: x[1])
+    result = input('Souhaitez-vous afficher la liste par ordre alphabétique(1) ou de classement(2)?')
+    if result == "1":
+        screen_players_alpha = sorted(screen_players, key=lambda x: x[1])
+    elif result == "2":
+        screen_players_alpha = sorted(screen_players, key=lambda x: x[3], reverse=True)
 
     for screen_player in screen_players_alpha:
         print(*screen_player)
