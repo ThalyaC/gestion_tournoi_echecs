@@ -7,22 +7,22 @@ from datetime import datetime
 
 class Round:
     "création d'un round"
-    def __init__(self, name_tournament, current_round, start_date_round, end_date_round,start_hour, end_hour, list_matches, number_tables):
-        self.name_tournament=name_tournament #
+    def __init__(self, name_tournament, number_round, current_round, start_date_round, end_date_round,start_hour, end_hour, list_matches, number_tables):
+        self.name_tournament=name_tournament
         #self.number_of_rounds=number_of_rounds
-        #self.number_round = number_round
+        self.number_round = number_round
         self.current_round = current_round # format "a/b"
-        self.start_date_round = start_date_round #
-        self.end_date_round = end_date_round #
-        self.start_hour = start_hour #
-        self.end_hour = end_hour #
+        self.start_date_round = start_date_round
+        self.end_date_round = end_date_round
+        self.start_hour = start_hour
+        self.end_hour = end_hour
         #self.list_players_round = list_players_round
         self.list_matches= list_matches
-        self.number_tables = number_tables #
+        self.number_tables = number_tables
 
-    def add_match(self, info_match):
-        """Ajoute un match au round en cours de création"""
-        self.list_matches.append(info_match)
+    #def add_match(self, info_match):
+        #"""Ajoute un match au round en cours de création"""
+        #self.list_matches.append(info_match)
     
 
 class Match:
@@ -85,31 +85,64 @@ def new_round():
     end_hour = ("") # idem
     list_chessplayers_tournament, number_players, players_file_tournament = create_list_players_tournament(tournament_register1)
     print(f"La round {current_round} contient {number_players} joueurs.")
-    list_players_round = list_chessplayers_tournament
-    list_matches, number_tables = create_matches(number_round, number_of_rounds, number_players, list_players_round, players_file_tournament)
-        
-    """création d'une round"""
-    round = Round(name_tournament=name_tournament, current_round=current_round, start_date_round=start_date_round, start_hour=start_hour, end_date_round=end_date_round, end_hour=end_hour, list_matches=list_matches, number_tables=number_tables)
-    info_round={"Nom du tournoi" : round.name_tournament, "Round" : round.current_round, "Date de lancement":round.start_date_round, "Heure de lancement":round.start_hour, "Round finie le":round.end_date_round, "Heure de fin":round.end_hour, "Nombre de tables en cours de jeu":round.number_tables, "Liste des appariements":round.list_matches}
-    
-    
-    
-    """Enregistrement des infos de la round dans le fichier round du tournoi"""
+
     tourmanent_rounds_file = 'rounds_'+tournament_register1
     tourmanent_register_case = tournament_register1+'/'
+    list_rounds1=[] # résout le pb d'effacement yes!
+
+    list_players_round = list_chessplayers_tournament
+    list_matches, number_tables = create_matches(number_round, number_of_rounds, number_players, list_players_round, players_file_tournament)
+    
+        
+    """création d'une round"""
+    round = Round(name_tournament=name_tournament, number_round = number_round, current_round=current_round, start_date_round=start_date_round, start_hour=start_hour, end_date_round=end_date_round, end_hour=end_hour, list_matches=list_matches, number_tables=number_tables)
+    info_round_common = {"Nom du tournoi" : round.name_tournament, "Round" : round.current_round}
+    info_round={"Round" : round.number_round, "Date de lancement":round.start_date_round, "Heure de lancement":round.start_hour, "Round finie le":round.end_date_round, "Heure de fin":round.end_hour, "Nombre de tables en cours de jeu":round.number_tables, "Liste des appariements":round.list_matches}
+    
+    """
+    1ere modif
+    if number_round==1: ##
+        round = Round(name_tournament=name_tournament, number_round = number_round, current_round=current_round, start_date_round=start_date_round, start_hour=start_hour, end_date_round=end_date_round, end_hour=end_hour, list_matches=list_matches, number_tables=number_tables)
+        info_round_common = {"Nom du tournoi" : round.name_tournament, "Round" : round.current_round}
+        info_round1 = {"Round":round.number_round,"Date de lancement":round.start_date_round, "Heure de lancement":round.start_hour, "Round finie le":round.end_date_round, "Heure de fin":round.end_hour, "Nombre de tables en cours de jeu":round.number_tables, "Liste des appariements":round.list_matches}
+        info_round = info_round_common, info_round1
+
+    else:
+        round = Round(name_tournament=name_tournament, current_round=current_round, start_date_round=start_date_round, start_hour=start_hour, end_date_round=end_date_round, end_hour=end_hour, list_matches=list_matches, number_tables=number_tables)
+        info_round={"Nom du tournoi" : round.name_tournament, "Round" : round.current_round, "Date de lancement":round.start_date_round, "Heure de lancement":round.start_hour, "Round finie le":round.end_date_round, "Heure de fin":round.end_hour, "Nombre de tables en cours de jeu":round.number_tables, "Liste des appariements":round.list_matches}
+    
+   
+    avant modif :
+    round = Round(name_tournament=name_tournament, current_round=current_round, start_date_round=start_date_round, start_hour=start_hour, end_date_round=end_date_round, end_hour=end_hour, list_matches=list_matches, number_tables=number_tables)
+    info_round={"Nom du tournoi" : round.name_tournament, "Round" : round.current_round, "Date de lancement":round.start_date_round, "Heure de lancement":round.start_hour, "Round finie le":round.end_date_round, "Heure de fin":round.end_hour, "Nombre de tables en cours de jeu":round.number_tables, "Liste des appariements":round.list_matches}
+    """
+    
+    
+    """Enregistrement des infos de la round dans le fichier round du tournoi
+    tourmanent_rounds_file = 'rounds_'+tournament_register1
+    tourmanent_register_case = tournament_register1+'/'
+    list_rounds1=[] # résout le pb d'effacement yes!"""
 
     try :
         with open('chess_data/'+tourmanent_register_case+ tourmanent_rounds_file+'.json', 'r') as lp:
             list_rounds2 = json.load(lp)
+            (print(list_rounds2))
             for one_round in list_rounds2:
-                list_rounds1=[]
                 list_rounds1.append(one_round)
                 list_rounds=list_rounds1
        
     except:
         list_rounds=[]
 
-    list_rounds.append(info_round)
+    if list_rounds==[]:
+        list_rounds.append(info_round_common)
+        list_rounds.append(info_round)
+
+    else:
+        update_current_round = current_round
+        list_rounds[0]["Round"] = update_current_round
+        list_rounds.append(info_round)
+    
 
     with open('chess_data/'+tourmanent_register_case+ tourmanent_rounds_file+'.json', 'w', encoding='utf-8') as lp:
         """Attention, pour le moment, ne vérifie pas si la round est djà existante!!!"""
@@ -202,7 +235,11 @@ def create_matches(number_round, number_of_rounds, number_players, list_players_
     elif 1 < round_int <= number_of_rounds_int:
 
         """ création des autres rounds en fonction des résultats des joueurs"""
-        list_sorted_by_score = sorted(list_players_round, key=lambda x: x["score"])
+
+        """Vérifier que tous les scores de la round précédente ont été enregistrés"""
+        #round_int_previous = round_int-1
+        #for round_solo in 
+        list_sorted_by_score = sorted(list_players_round, key=lambda x: x["score"], reverse=True)
         print(list_sorted_by_score)
 
         for i in range(0, len(list_ffe_round),2):
@@ -211,6 +248,7 @@ def create_matches(number_round, number_of_rounds, number_players, list_players_
             if i + 1 < len(list_ffe_round):
                 white = list_ffe_round[i] #
                 black = list_ffe_round[i+1] #
+
                 table = n # 
                 match = Match(table=table, white=white, black=black, score_players=" ")
                 info_match={"Table" : match.table, "Blanc": match.white, "Noir":match.black, "score": match.score_player1_2}
@@ -254,6 +292,7 @@ def create_matches(number_round, number_of_rounds, number_players, list_players_
     else :
         print("Cette round n'existe pas")
         return None
+    
 # STOP ICI à faire : modifier fonction create matches pour éviter répétition des tables, 
 # mise à jour de score_recording puis affichage des rounds
 # !!!! efface round r-2 et pb si x>round_number 
