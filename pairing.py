@@ -144,7 +144,15 @@ def create_matches(number_round, number_of_rounds, number_players, list_players_
         
         """Creation des appariements de la premiere round de manière aléatoire"""        
         random.shuffle(list_ffe_round)
-                
+        """
+        result = create_match(list_ffe_round, list_matches, list_players_round, players_file_tournament, number_tables)
+        
+        if result is not None:
+            list_matches, number_tables = result
+
+        else :
+            pass        
+        """
         for i in range(0, len(list_ffe_round),2):
             
             """Création d'un match simple"""
@@ -160,7 +168,7 @@ def create_matches(number_round, number_of_rounds, number_players, list_players_
             
             else:
                 """Si le nombre de joueurs est impair, création d'une dernière table avec un joueur exempté, 
-                enregistrement automatique du score 0.5-_ """
+                enregistrement automatique du score 0.5-_"""
                 #list_pairing.append(("Blanc :"+list_ffe_round[i], "Noir : exempt","table"+str(n), "score :0.5-_"))
                 white = list_ffe_round[i] #
                 black = "exempt" #
@@ -174,7 +182,7 @@ def create_matches(number_round, number_of_rounds, number_players, list_players_
                 score_player1_3 = 0.5
                 key_ffe = "Numero FFE"
 
-                """Soustraction automatique de ce match au nombre de tables en jeu"""
+                #Soustraction automatique de ce match au nombre de tables en jeu
                 number_tables = number_tables-1
                 
                 "Ajout automatique de 0.5 point au joueur exempté"
@@ -190,7 +198,7 @@ def create_matches(number_round, number_of_rounds, number_players, list_players_
             if n > number_tables:
                 break
         return list_matches, number_tables
-    # STOP ICI mettre à jour les rounds suivantes puis score recording
+    
     elif 1 < round_int <= number_of_rounds_int:
 
         """ création des autres rounds en fonction des résultats des joueurs"""
@@ -198,28 +206,44 @@ def create_matches(number_round, number_of_rounds, number_players, list_players_
         print(list_sorted_by_score)
 
         for i in range(0, len(list_ffe_round),2):
+            
             """Création d'un match simple"""
             if i + 1 < len(list_ffe_round):
-                list_matches.append(("Blanc :"+list_ffe_round[i], "Noir :"+list_ffe_round[i+1],"table"+str(n)))
+                white = list_ffe_round[i] #
+                black = list_ffe_round[i+1] #
+                table = n # 
+                match = Match(table=table, white=white, black=black, score_players=" ")
+                info_match={"Table" : match.table, "Blanc": match.white, "Noir":match.black, "score": match.score_player1_2}
+                #Round.add_match(info_match)
+                list_matches.append(info_match)
+                #list_pairing.append(("Blanc :"+list_ffe_round[i], "Noir :"+list_ffe_round[i+1],"table"+str(n)))
+            
             else:
                 """Si le nombre de joueurs est impair, création d'une dernière table avec un joueur exempté, 
-                enregistrement automatique du score 0.5-_ """
-                list_matches.append(("Blanc :"+list_ffe_round[i], "Noir : exempt","table"+str(n), "score :0.5-_"))
+                enregistrement automatique du score 0.5-_"""
+                #list_pairing.append(("Blanc :"+list_ffe_round[i], "Noir : exempt","table"+str(n), "score :0.5-_"))
+                white = list_ffe_round[i] #
+                black = "exempt" #
+                table = n # 
+                match = Match(table=table, white=white, black=black, score_players="0.5-_")
+                info_match={"Table" : match.table, "Blanc": match.white, "Noir":match.black, "score": match.score_player1_2}
+                #Round.add_match(info_match)
+                list_matches.append(info_match)
                 player1_ffe = list_ffe_round[i]
-                print("player1",player1_ffe)
+                print("Blanc :",player1_ffe)
                 score_player1_3 = 0.5
-                #key_score = "score"
                 key_ffe = "Numero FFE"
 
-                """Soustraction automatique de ce match au nombre de tables en jeu"""
+                #Soustraction automatique de ce match au nombre de tables en jeu
                 number_tables = number_tables-1
-
+                
                 "Ajout automatique de 0.5 point au joueur exempté"
                 for player_round in list_players_round:
                     if key_ffe in player_round and player_round[key_ffe] == player1_ffe:
                         player_exempt = player_round
                         score_player1_2 = float(player_round["score"])
                         player_round["score"] = score_player1_2 + score_player1_3
+                        update_score_players_tournament(players_file_tournament, list_players_round)
                         break
                 print("joueur exempt:",player_exempt)
             n += 1
@@ -230,7 +254,9 @@ def create_matches(number_round, number_of_rounds, number_players, list_players_
     else :
         print("Cette round n'existe pas")
         return None
-
+# STOP ICI à faire : modifier fonction create matches pour éviter répétition des tables, 
+# mise à jour de score_recording puis affichage des rounds
+# !!!! efface round r-2 et pb si x>round_number 
 def score_recording():
     
     """Enregistrer les scores pour les appariements, 
@@ -312,6 +338,56 @@ def score_recording():
 #create_matches()
 
 
-new_round()
+
 
 #score_recording()
+new_round()
+"""
+ne marche pas
+def create_match(list_ffe_round, list_matches, list_players_round, players_file_tournament, number_tables):
+    n = 1
+    for i in range(0, len(list_ffe_round),2):
+            
+        
+        if i + 1 < len(list_ffe_round):
+            white = list_ffe_round[i] #
+            black = list_ffe_round[i+1] #
+            table = n # 
+            match = Match(table=table, white=white, black=black, score_players=" ")
+            info_match={"Table" : match.table, "Blanc": match.white, "Noir":match.black, "score": match.score_player1_2}
+            #Round.add_match(info_match)
+            list_matches.append(info_match)
+            #list_pairing.append(("Blanc :"+list_ffe_round[i], "Noir :"+list_ffe_round[i+1],"table"+str(n)))    
+            
+        else:
+            
+            #list_pairing.append(("Blanc :"+list_ffe_round[i], "Noir : exempt","table"+str(n), "score :0.5-_"))
+            white = list_ffe_round[i] #
+            black = "exempt" #
+            table = n # 
+            match = Match(table=table, white=white, black=black, score_players="0.5-_")
+            info_match={"Table" : match.table, "Blanc": match.white, "Noir":match.black, "score": match.score_player1_2}
+            #Round.add_match(info_match)
+            list_matches.append(info_match)
+            player1_ffe = list_ffe_round[i]
+            print("Blanc :",player1_ffe)
+            score_player1_3 = 0.5
+            key_ffe = "Numero FFE"
+
+           
+            number_tables = number_tables-1
+            
+            "Ajout automatique de 0.5 point au joueur exempté"
+            for player_round in list_players_round:
+                if key_ffe in player_round and player_round[key_ffe] == player1_ffe:
+                    player_exempt = player_round
+                    score_player1_2 = float(player_round["score"])
+                    player_round["score"] = score_player1_2 + score_player1_3
+                    update_score_players_tournament(players_file_tournament, list_players_round)
+                    break
+            print("joueur exempt:",player_exempt)
+        n += 1
+        if n > number_tables:
+            break
+    
+"""
