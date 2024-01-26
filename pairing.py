@@ -1,6 +1,6 @@
 #from tournament import Tournament
 import json
-from registration_players_tourmanent import open_list_tournaments, create_file_folder_name, seek_player_ffe, PlayerTournament, open_list, write_list
+from registration_players_tourmanent import open_list_tournaments, create_file_folder_name, seek_player_ffe, open_list, write_list
 import random
 from datetime import datetime
 import sys
@@ -129,9 +129,6 @@ def new_round():
         
     write_list(path_tourmanent_rounds_file, result_list) 
     return number_round, tournament_register1
-
-""" 133 - 260 """
-
 
 
 def create_matches(number_round, number_of_rounds, number_players, list_players_round, players_file_tournament, path_tourmanent_rounds_file):
@@ -369,6 +366,7 @@ def what_else(result):
     else :
         pass
 
+
 def does_list_exist(result):
     "Vérifie que la liste existe ou en crée une vide"
     if result == None:
@@ -376,12 +374,6 @@ def does_list_exist(result):
     else :
         wanted_list = result
     return wanted_list
-
-
-# faire un fichier toolbox 
-# affichage des rounds _ display
-# main
-
 
 
 def not_in_list(ma_liste,black):
@@ -411,94 +403,10 @@ def not_former_adversary(players_file_tournament, player1, player2):
             not_in_list(list_former_adversary, player2)
 
 
-#not_in_list(ma_liste,"AA12345")
-
-score_recording()
+#score_recording()
 #new_round()
 
-def score_recording1():
-    
-    """Enregistrer les scores pour les appariements, 
-    mise à jour du nombre de matches restants,
-    puis pour les joueurs individuellement"""
-    tournament_register1, _, _ = which_tournament()
-    number_round_score2 = input ("Dans quelle round souhaitez-vous enregistrer un score?")
-    number_round_score1 = int(number_round_score2)
-    
-    
-    """Pour accéder à la round demandée"""
-    with open('chess_data/'+tournament_register1+'/rounds_'+tournament_register1+'.json', 'r') as lp:
-        list_info_current_tournament = json.load(lp)
-
-    try:  
-        round_info_total = list_info_current_tournament[number_round_score1]
-    except:
-        print("Cette round n'a pas été encore créée ou vous avez fait une erreur de saisie")
-        sys.exit(0)
-
-    table_score2 = input ("Quelle table? (tapez juste un numéro)")
-    table_score = str(table_score2)
-    
-    print("1.",table_score)
-    print (len(round_info_total))
-    print (round_info_total)
-    remaining_tables1 = round_info_total["Nombre de tables en cours de jeu"]
-    print (remaining_tables1)
-    print(f"Il reste {remaining_tables1} table(s) à enregistrer")
-   
-    """inscription des scores dans la liste d'appariement"""
-    list_pairing = round_info_total['Liste des appariements']
-    print("2;",list_pairing, len(list_pairing))
-    info_pairing = list_pairing[int(table_score2)-1]
-    print(info_pairing)
-    add_score = input("Entrez le score (1-0,0-1 ou 0.5-0.5)")
-    info_pairing["score"] = add_score
-    print("12.",info_pairing)
-    
-    """Mise à jour du nombre de tables"""
-    round_info_total["Nombre de tables en cours de jeu"] = remaining_tables1-1
-
-    """Création automatique de la date et heure de fin de la round"""
-    remaining_tables = round_info_total["Nombre de tables en cours de jeu"]
-    if remaining_tables==0 :
-        end_round = datetime.now()
-        date_end = end_round.strftime("%d.%m.%y")
-        hour_end = end_round.strftime("%H.%M")
-        round_info_total["Heure de fin"] = hour_end
-        round_info_total["Round finie le"] = date_end
-        round_info_total["Etat"] = "Clos"
-
-
-    """inscription et modification des scores dans la liste des joueurs"""
-    individual_score = add_score.split("-")
-    print(individual_score)
-    score_player1_2 = float(individual_score[0])
-    score_player2_2 = float(individual_score[1])
-    print(f"joueur 1: {score_player1_2}, joueur 2: {score_player2_2}")
-    
-    # Le numéro FFE des joueurs
-    player_1_1 = info_pairing["Blanc"]
-    player_2_1 = info_pairing["Noir"]
-    #player_1_1 = player_1_2[-7:]
-    #player_2_1 = player_2_2[-7:]
-
-    with open('chess_data/'+tournament_register1+'/players_'+tournament_register1+'.json', 'r') as lp:
-        list_individual = json.load(lp)
-    
-    player_1 = seek_player_ffe(list_individual, player_1_1)
-    player_2 = seek_player_ffe(list_individual, player_2_1)
-    print(player_1, player_2)
-    player_1["Anciens adversaires"].append(player_2_1)
-    player_2["Anciens adversaires"].append(player_1_1)
-    score_player1_1 = float(player_1["score"])
-    score_player1 = score_player1_1 + score_player1_2
-    player_1["score"] = score_player1
-    score_player2_1 = float(player_2["score"])
-    score_player2 = score_player2_1 + score_player2_2
-    player_2["score"] = score_player2
-    
-    with open('chess_data/'+tournament_register1+'/rounds_'+tournament_register1+'.json', 'w') as lp:
-        json.dump(list_info_current_tournament, lp, indent=4)
-
-    with open('chess_data/'+tournament_register1+'/players_'+tournament_register1+'.json','w', encoding='utf-8') as lp:
-        json.dump(list_individual, lp, indent=4)
+#STOP
+# faire un fichier toolbox 
+# affichage des rounds _ display
+# main
