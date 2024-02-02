@@ -1,6 +1,6 @@
 #from tournament import Tournament
-import json
-from registration_players_tourmanent import open_list_tournaments, create_file_folder_name, seek_player_ffe, open_list, write_list
+#import json
+from registration_players_tourmanent import create_file_folder_name, seek_player_ffe, open_list, write_list
 import random
 from datetime import datetime
 import sys
@@ -19,9 +19,26 @@ class Round:
         self.list_matches= list_matches
         self.number_tables = number_tables
         self.status = status
+    
+    def round_info(self):
+        return {"Round": self.number_round, "Etat": self.status, "Date de lancement": self.start_date_round, "Heure de lancement": self.start_hour, "Round finie le": self.end_date_round, "Heure de fin": self.end_hour, "Nombre de tables en cours de jeu": self.number_tables, "Liste des appariements": self.list_matches}
 
-
-class Match:
+    @classmethod
+    def read_info_round(cls,path_tourmanent_rounds_file):
+        list_data_round = open_list(path_tourmanent_rounds_file)
+        list_data_round.pop(0)
+        
+        if isinstance(list_data_round, list):
+            rounds = []
+            for round_data in list_data_round:
+                round = cls(name_tournament=round_data.get("Nom du tournoi",None), current_round= round_data.get("Round", None),number_round=round_data.get("Round"), status=round_data.get("Etat"), start_date_round=round_data.get("Date de lancement"), start_hour=round_data.get("Heure de lancement"), end_date_round=round_data.get("Round finie le"), end_hour=round_data.get("Heure de fin"), number_tables=round_data.get("Nombre de tables en cours de jeu"), list_matches=round_data.get("Liste des appariements"))
+                rounds.append(round)
+            return rounds
+        else :
+            return cls(name_tournament=round_data.get("Nom du tournoi", None), current_round= round_data.get("Round", None),number_round=round_data.get("Round"), status=round_data.get("Etat"), start_date_round=round_data.get("Date de lancement"), start_hour=round_data.get("Heure de lancement"), end_date_round=round_data.get("Round finie le"), end_hour=round_data.get("Heure de fin"), number_tables=round_data.get("Nombre de tables en cours de jeu"), list_matches=round_data.get("Liste des appariements"))
+                
+    
+class Match(Round):
     def __init__(self, table, white, black, score_players):
         self.white = white
         self.black = black
@@ -31,12 +48,12 @@ class Match:
     def info_match(self):
         return {"Table" : self.table, "Blanc": self.white, "Noir":self.black, "score": self.score_player1_2}
     
-
+    
 def which_tournament(): #
     """
     1. Demande à l'utilisateur de choisir un tournoi, 
     2. récupère les éléments nécessaires à la création d'une round"""
-    list_tournaments = open_list_tournaments()
+    list_tournaments = open_list("list_tournaments")
     
     """nom du tournoi"""
     list_tournaments_name = [element["Nom"] for element in list_tournaments]
@@ -94,7 +111,7 @@ def new_round():
     print(f"Ce tournoi contient {number_of_rounds} rounds.")
     
     path_tourmanent_rounds_file = tournament_register1+'/'+ 'rounds_'+tournament_register1
-    number_round = input ("Quelle round souhaitez-vous lancer?")
+    number_round = input("Quelle round souhaitez-vous lancer?")
     result_list1 = check_round(number_round, path_tourmanent_rounds_file)
     result_list = does_list_exist(result_list1)
     
@@ -115,8 +132,7 @@ def new_round():
     """création d'une round"""
     round = Round(name_tournament=name_tournament, number_round = number_round, current_round=current_round, start_date_round=start_date_round, start_hour=start_hour, end_date_round=end_date_round, end_hour=end_hour, list_matches=list_matches, number_tables=number_tables, status="En cours")
     info_round_common = {"Nom du tournoi" : round.name_tournament, "Round" : round.current_round}
-    info_round={"Round" : round.number_round, "Etat":round.status, "Date de lancement":round.start_date_round, "Heure de lancement":round.start_hour, "Round finie le":round.end_date_round, "Heure de fin":round.end_hour, "Nombre de tables en cours de jeu":round.number_tables, "Liste des appariements":round.list_matches}
-    
+    info_round=round.round_info()
     if result_list == []:
         
         #update_current_round = current_round
@@ -278,7 +294,7 @@ def exempt_match(list_ffe_round, list_players_round, list_matches, players_file_
     """Ajout automatique de 0.5 point au joueur exempté"""
     for player_round in list_players_round:
         if key_ffe in player_round and player_round[key_ffe] == player1_ffe:
-            player_exempt = player_round
+            #player_exempt = player_round
             score_player1_2 = float(player_round["score"])
             player_round["score"] = score_player1_2 + score_player1_3
             player_round["Anciens adversaires"].append(black)
@@ -402,11 +418,79 @@ def not_former_adversary(players_file_tournament, player1, player2):
             list_former_adversary = player[key_former_adversary]
             not_in_list(list_former_adversary, player2)
 
-
+   
+        
 #score_recording()
 #new_round()
-
+#display_on_screen_players_round()
 #STOP
 # faire un fichier toolbox 
 # affichage des rounds _ display
 # main
+
+def display_on_screen_round():
+    "Affiche la round souhaitée"
+    
+    tournament_register1, name_tournament, _ = which_tournament()
+    list_chess_players = open_list("list_players1")
+    path_tourmanent_rounds_file = tournament_register1+'/rounds_'+tournament_register1
+    path_tourmanent_players_file = tournament_register1+'/players_'+tournament_register1
+    list_round=Round.read_info_round(path_tourmanent_rounds_file)
+    list_players_round=open_list(path_tourmanent_players_file)
+    
+    number_of_rounds = len(list_round)
+    display_round1=input(f"Actuellement la dernière round est la round {number_of_rounds}.\nQuelle round souhaitez-vous afficher?")
+    
+    try : 
+        display_round = int(display_round1)
+        print("\n",name_tournament,"\n", "Round",display_round)
+        display_round_3(list_round, display_round,list_players_round,list_chess_players)
+    except :
+        print("Cette round n'a pas été encore créée ou vous avez fait une erreur de saisie")
+        sys.exit(0)
+    
+    
+
+def display_round_3(list_round, display_round,list_players_round,list_chess_players):
+    "Affiche les matches. Lie les matches aux noms des joueurs et à leurs scores précédents"
+    round_choose=list_round[display_round-1]
+    content_round=round_choose.round_info()
+    list_pairing1=content_round["Liste des appariements"]
+    #print(content_round)
+    #print(list_pairing1)
+
+    for table in list_pairing1:
+        number_table_screen=table["Table"]
+        player_white2= seek_player_ffe(list_players_round, table["Blanc"])
+        player_white1= seek_player_ffe(list_chess_players, table["Blanc"])
+        player_white= player_white2["score"],player_white1["Nom"],player_white1["Prenom"]
+        #test1=len(player_white1["Nom"])+len(player_white1["Prenom"])
+        #print(test1)
+        espace_number_white = 25 - ((len(player_white1["Nom"])+len(player_white1["Prenom"]))+len(table["score"]))
+        #print(espace_number_white)
+        espace = " "
+        espaces_w = espace_number_white*espace
+        #print(len(table["score"]))
+        
+        player_black3 = table["Noir"]
+        if player_black3 == "exempt":
+            player_black = "exempt"
+            #print(len(player_black))
+            #print(len(table["score"]))
+            espace_number_black = 25 - (len("exempt")+len(table["score"]))
+            espace = " "
+            espaces_b = espace_number_black*espace
+            #print(espace_number_black)
+        else:
+            player_black2= seek_player_ffe(list_players_round, player_black3)
+            player_black1= seek_player_ffe(list_chess_players, player_black3)
+            player_black= player_black1["Nom"],player_black1["Prenom"], player_black2["score"]
+            espace_number_black = 25 - ((len(player_black1["Nom"])+len(player_black1["Prenom"]))+len(table["score"]))
+            #print(espace_number_black)
+            espace = " "
+            espaces_b = espace_number_black*espace
+    
+        print("\nTable",number_table_screen,"\n", *player_white,espaces_w,"|",*table["score"],"|",espaces_b, *player_black,"\n")
+
+        
+display_on_screen_round()
