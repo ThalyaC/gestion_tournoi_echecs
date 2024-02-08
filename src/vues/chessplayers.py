@@ -9,7 +9,7 @@ from src.models_chess import ChessPlayer
 import os
 parent_path = os.path.abspath("../gestion_tournoi_echecs/models_chess.py")"""
 # from ..models_chess import ChessPlayer
-from src.toolbox import write_list, open_list, PLAYERS
+from src.toolbox import write_list, open_list, no_special_char_word, PLAYERS
 
 
 
@@ -82,8 +82,8 @@ def register_player():
         print("fin d'enregistrement")
 
     else:
-        new_name = input("Nom :")
-        new_first_name = input("Prénom :")
+        new_name = no_special_char_word(input("Nom :"))
+        new_first_name = no_special_char_word(input("Prénom :"))
         new_date_of_birth = input("Date de naissance :")
 
         """création d'un joueur d'échecs"""
