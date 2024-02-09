@@ -59,7 +59,8 @@ def ffe_check(ffe_number, list_chessplayers: list, txt):
         else:
             new_ffe_number = input("\nNouveau numéro FFE (ou appuyer sur Entrée pour terminer) : ")
             if not new_ffe_number:
-                return None
+                print("Fin")
+                sys.exit(0)
             else:
                 return ffe_check(new_ffe_number, list_chessplayers, txt)
     else :
