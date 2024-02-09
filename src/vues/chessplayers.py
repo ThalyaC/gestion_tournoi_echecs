@@ -12,7 +12,7 @@ parent_path = os.path.abspath("../gestion_tournoi_echecs/models_chess.py")"""
 from src.toolbox import write_list, open_list, no_special_char_word, PLAYERS
 
 
-def validate_format_ffe_number(ffe_number: str) -> str | None:
+def validate_format_ffe_number(ffe_number) -> str | None:
     """Vérifie le format du numéro de licence type : AB12345"""
 
     if (
@@ -21,40 +21,26 @@ def validate_format_ffe_number(ffe_number: str) -> str | None:
         and ffe_number.isupper()
         and ffe_number[2 - 7 :].isdigit()
     ):
-        print("Le numéro de licence est valide.")
+        print("Le numéro de licence est conforme.")
         return ffe_number
 
     else:
-        print("Le format du numéro de licence est invalide, veuillez réessayer.")
-        new_ffe_number = input("\nNuméro de licence (du type AB12345) à nouveau: ")
-        return validate_format_ffe_number(new_ffe_number) if new_ffe_number else None
+        print("Le format du numéro de licence est invalide.\n Il doit être du type : AB12345")
+        return None
+    
 
 
-def check_old_number_ffe(list_chessplayers: list, ffe_number: str):
+def check_old_number_ffe(list_chessplayers: list, ffe_number: str, txt):
     """Vérifie si le numéro FFE existe déjà dans la liste des joueurs"""
     try:
         liste_ffe_number = [element["Numero FFE"] for element in list_chessplayers]
-        print(sorted(liste_ffe_number))
+        #print(sorted(liste_ffe_number))
         ffe_number1 = str(ffe_number)
-        print(ffe_number1)
 
         if ffe_number1 in liste_ffe_number:
-            while True:
-                new_ffe_number = input(
-                    "\nCe numéro a déjà été enregistré dans la base de données du club." 
-                    "\nNouveau numéro FFE (ou appuyer sur Entrée pour terminer): "
-                )
-
-                if not new_ffe_number:
-                    return None
-
-                elif new_ffe_number not in liste_ffe_number:
-                    new_ffe_number_last = validate_format_ffe_number(new_ffe_number)
-                    if new_ffe_number_last:
-                        ffe_number1 = new_ffe_number_last
-                        print("Le numéro de licence va être enregistré.\n")
-                        return ffe_number1
-
+            print("\nCe numéro a déjà été enregistré dans ", txt)
+            return None
+   
         else:
             print("Le numéro de licence va être enregistré.\n")
             return ffe_number1
@@ -65,19 +51,27 @@ def check_old_number_ffe(list_chessplayers: list, ffe_number: str):
         return ffe_number1
 
 
-def ffe_check(list_chessplayers: list):
+def ffe_check(ffe_number, list_chessplayers: list, txt):
     """Valide le numéro FFE"""
-    ffe_number = input("\nNuméro de licence (du type AB12345) : ")
-    resultat = check_old_number_ffe(
-        list_chessplayers, validate_format_ffe_number(ffe_number)
-    )
-    return resultat
-
+    if validate_format_ffe_number(ffe_number) :
+        if check_old_number_ffe(list_chessplayers, ffe_number, txt):
+            return ffe_number
+        else:
+            new_ffe_number = input("\nNouveau numéro FFE (ou appuyer sur Entrée pour terminer) : ")
+            if not new_ffe_number:
+                return None
+            else:
+                return ffe_check(new_ffe_number, list_chessplayers, txt)
+    else :
+        new_ffe_number = input("\nNouveau numéro FFE (ou appuyer sur Entrée pour terminer) : ")
+        return ffe_check(new_ffe_number, list_chessplayers, txt)
+   
 
 def register_player():
     """Création d'un joueur d'échecs en vérifiant le numéro FFE"""
     list_chessplayers = open_list(PLAYERS)
-    ffe_number = ffe_check(list_chessplayers)
+    ffe_number1 = input("\nNuméro de licence (du type AB12345) : ")
+    ffe_number = ffe_check(ffe_number1, list_chessplayers, txt="la base de données du club.")
 
     if ffe_number is None:
         print("fin d'enregistrement.\n")
@@ -137,5 +131,6 @@ def display_on_screen_players_club():
         print(*screen_player)
 
 
-#register_player()
+# register_player()
 # display_on_screen_players_club()
+
