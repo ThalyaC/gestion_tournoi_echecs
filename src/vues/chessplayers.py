@@ -12,7 +12,6 @@ parent_path = os.path.abspath("../gestion_tournoi_echecs/models_chess.py")"""
 from src.toolbox import write_list, open_list, no_special_char_word, PLAYERS
 
 
-
 def validate_format_ffe_number(ffe_number: str) -> str | None:
     """Vérifie le format du numéro de licence type : AB12345"""
 
@@ -22,12 +21,12 @@ def validate_format_ffe_number(ffe_number: str) -> str | None:
         and ffe_number.isupper()
         and ffe_number[2 - 7 :].isdigit()
     ):
-        print("Le numéro de licence est valide")
+        print("Le numéro de licence est valide.")
         return ffe_number
 
     else:
-        print("Le format du numéro de licence est invalide, veuillez réessayer")
-        new_ffe_number = input("Numéro de licence (du type AB12345) à nouveau:")
+        print("Le format du numéro de licence est invalide, veuillez réessayer.")
+        new_ffe_number = input("\nNuméro de licence (du type AB12345) à nouveau: ")
         return validate_format_ffe_number(new_ffe_number) if new_ffe_number else None
 
 
@@ -42,7 +41,8 @@ def check_old_number_ffe(list_chessplayers: list, ffe_number: str):
         if ffe_number1 in liste_ffe_number:
             while True:
                 new_ffe_number = input(
-                    "Ce numéro a déjà été enregistré. Nouveau numéro FFE (ou appuyer sur Entrée pour terminer):"
+                    "\nCe numéro a déjà été enregistré dans la base de données du club." 
+                    "\nNouveau numéro FFE (ou appuyer sur Entrée pour terminer): "
                 )
 
                 if not new_ffe_number:
@@ -52,21 +52,22 @@ def check_old_number_ffe(list_chessplayers: list, ffe_number: str):
                     new_ffe_number_last = validate_format_ffe_number(new_ffe_number)
                     if new_ffe_number_last:
                         ffe_number1 = new_ffe_number_last
-                        break
+                        print("Le numéro de licence va être enregistré.\n")
+                        return ffe_number1
 
         else:
-            print("Le numéro de licence va être enregistré")
+            print("Le numéro de licence va être enregistré.\n")
             return ffe_number1
 
     # Si le fichier n'existe pas encore
     except FileNotFoundError:
-        print("Le numéro de licence va être enregistré")
+        print("Le numéro de licence va être enregistré.\n")
         return ffe_number1
 
 
 def ffe_check(list_chessplayers: list):
     """Valide le numéro FFE"""
-    ffe_number = input("Numéro de licence (du type AB12345) :")
+    ffe_number = input("\nNuméro de licence (du type AB12345) : ")
     resultat = check_old_number_ffe(
         list_chessplayers, validate_format_ffe_number(ffe_number)
     )
@@ -79,12 +80,12 @@ def register_player():
     ffe_number = ffe_check(list_chessplayers)
 
     if ffe_number is None:
-        print("fin d'enregistrement")
+        print("fin d'enregistrement.\n")
 
     else:
-        new_name = no_special_char_word(input("Nom :"))
-        new_first_name = no_special_char_word(input("Prénom :"))
-        new_date_of_birth = input("Date de naissance :")
+        new_name = no_special_char_word(input("Nom : "))
+        new_first_name = no_special_char_word(input("Prénom : "))
+        new_date_of_birth = input("Date de naissance : ")
 
         """création d'un joueur d'échecs"""
         chess_player = ChessPlayer(
@@ -104,6 +105,14 @@ def register_player():
         list_chessplayers.append(info_chess_player)
 
         write_list(PLAYERS, list_chessplayers)
+        nom = info_chess_player["Nom"]
+        prenom = info_chess_player["Prenom"]
+        print(
+            "Parfait, {} {} vient d'être enregistré(e) dans la base de données du club.\n"
+            .format(
+                prenom, nom
+            )
+        )
 
 
 def display_on_screen_players_club():
@@ -122,11 +131,11 @@ def display_on_screen_players_club():
 
     screen_players_alpha = sorted(screen_players, key=lambda x: x[1])
 
-    print("Nombre de joueurs enregistrés :", len(screen_players_alpha))
+    print("Nombre de joueurs enregistrés : ", len(screen_players_alpha))
 
     for screen_player in screen_players_alpha:
         print(*screen_player)
 
 
-# register_player()
+#register_player()
 # display_on_screen_players_club()
