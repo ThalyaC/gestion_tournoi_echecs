@@ -1,15 +1,14 @@
-PATH = "/root/gestion_tournoi_echecs/"
-
+"""PATH = "/root/gestion_tournoi_echecs/"
+sys.path.append(PATH)"""
 import sys
 
-sys.path.append(PATH)
-from src.models_chess import ChessPlayer
 
 """
 import os
 parent_path = os.path.abspath("../gestion_tournoi_echecs/models_chess.py")"""
-# from ..models_chess import ChessPlayer
-from src.toolbox import write_list, open_list, no_special_char_word, PLAYERS
+from models_chess import ChessPlayer
+from toolbox import write_list, open_list, no_special_char_word, PLAYERS
+#from tool_controller import other_choice
 
 
 def validate_format_ffe_number(ffe_number) -> str | None:
@@ -59,13 +58,18 @@ def ffe_check(ffe_number, list_chessplayers: list, txt):
         else:
             new_ffe_number = input("\nNouveau numéro FFE (ou appuyer sur Entrée pour terminer) : ")
             if not new_ffe_number:
-                print("Fin")
-                sys.exit(0)
+                print("")
+                """action = "choice_one"
+                other_choice(action)
+                #sys.exit(0)"""
             else:
                 return ffe_check(new_ffe_number, list_chessplayers, txt)
     else :
         new_ffe_number = input("\nNouveau numéro FFE (ou appuyer sur Entrée pour terminer) : ")
-        return ffe_check(new_ffe_number, list_chessplayers, txt)
+        if not new_ffe_number:
+            print("")
+        else :
+            return ffe_check(new_ffe_number, list_chessplayers, txt)
    
 
 def register_player():
@@ -75,7 +79,7 @@ def register_player():
     ffe_number = ffe_check(ffe_number1, list_chessplayers, txt="la base de données du club.")
 
     if ffe_number is None:
-        print("fin d'enregistrement.\n")
+        return print("fin d'enregistrement.\n")
 
     else:
         new_name = no_special_char_word(input("Nom : "))
@@ -132,6 +136,6 @@ def display_on_screen_players_club():
         print(*screen_player)
 
 
-# register_player()
+#register_player()
 # display_on_screen_players_club()
 
