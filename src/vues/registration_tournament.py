@@ -1,13 +1,9 @@
-PATH = "/root/gestion_tournoi_echecs/"
-
-import sys
-sys.path.append(PATH)
-from src.models_chess import Tournament
-from src.toolbox import open_list, write_list, generic_check, is_integer, no_special_char_word, EVENTS
+from models_chess import Tournament
+from toolbox import open_list, write_list, generic_check, is_integer, no_special_char_word, EVENTS
 
 
 def register_tournament():
-    "saisie et enregistrement dans un fichier json list_tournament des tournois"
+    """saisie et enregistrement dans un fichier json list_tournament des tournois"""
     new_name_tournament = no_special_char_word(input("Nom du nouveau tournoi (suivi de l'année si annuel, du numero, si régulier): "))
     place = no_special_char_word(input("Adresse : "))
     start_date = input("Date de debut: ")
@@ -30,4 +26,35 @@ def register_tournament():
 
     write_list(EVENTS, list_tournaments)
 
-#register_tournament()
+def display_on_screen_tournament_info():
+    """Afficher à l'écran, par ordre alphabétique, la base des joueurs du club"""
+    list_tournaments_screen = open_list(EVENTS)
+
+    screen_tournaments1 = []
+    for tournament_screen in list_tournaments_screen:
+        tournament_screen1 = (
+            tournament_screen["Nom"],
+            tournament_screen["Adresse"],
+            tournament_screen["Date de debut"],
+            tournament_screen["Date de fin"],
+            tournament_screen["Nombre de rounds"],
+            tournament_screen["Commentaire du directeur"]
+        )
+        screen_tournaments1.append(tournament_screen1)
+    screen_tournaments = []
+    for tournament_screen in screen_tournaments1:
+        screen_tournament = (
+            tournament_screen[0],
+            "\nLieu : ",
+            tournament_screen[1],
+            "\ndu ", tournament_screen[2],
+            "au ", tournament_screen[3],
+            "Nombre de rondes ", tournament_screen[4],
+            "\nCommentaire du directeur ",tournament_screen[5],"\n"
+        )
+        screen_tournaments.append(screen_tournament)    
+
+    print("Nombre de tournois enregistrés : ", len(screen_tournaments), "\n")
+
+    for screen_tournament in screen_tournaments:
+        print(*screen_tournament)
