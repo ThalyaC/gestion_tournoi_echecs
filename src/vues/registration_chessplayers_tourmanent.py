@@ -192,6 +192,7 @@ def display_on_screen_players_tournament():
             )
             screen_players.append(screen_player1)
         screen_players_alpha = user_request_to_display(screen_players)
+        print("\nNombre de joueurs enregistrés : ", len(screen_players_alpha), "\n")
         for screen_player in screen_players_alpha:
             print(*screen_player)
     except FileNotFoundError:
