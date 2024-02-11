@@ -26,13 +26,16 @@ class Tournament:
         start_date,
         end_date,
         director_comment,
-        number_of_rounds=4,
+        number_of_rounds=None,
     ):
         self.name = name_tournament
         self.place = place
         self.start_date = start_date
         self.end_date = end_date
-        self.number_of_rounds = number_of_rounds
+        if number_of_rounds is None or number_of_rounds =="":
+            self.number_of_rounds = "4"
+        else :
+            self.number_of_rounds = number_of_rounds
         self.director_comment = director_comment
         self.rounds = []
 
