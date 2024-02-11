@@ -1,14 +1,5 @@
-"""PATH = "/root/gestion_tournoi_echecs/"
-sys.path.append(PATH)"""
-import sys
-
-
-"""
-import os
-parent_path = os.path.abspath("../gestion_tournoi_echecs/models_chess.py")"""
 from models_chess import ChessPlayer
 from toolbox import write_list, open_list, no_special_char_word, PLAYERS
-#from tool_controller import other_choice
 
 
 def validate_format_ffe_number(ffe_number) -> str | None:
@@ -24,22 +15,22 @@ def validate_format_ffe_number(ffe_number) -> str | None:
         return ffe_number
 
     else:
-        print("Le format du numéro de licence est invalide.\n Il doit être du type : AB12345")
+        print(
+            "Le format du numéro de licence est invalide.\n Il doit être du type : AB12345"
+        )
         return None
-    
 
 
 def check_old_number_ffe(list_chessplayers: list, ffe_number: str, txt):
     """Vérifie si le numéro FFE existe déjà dans la liste des joueurs"""
     try:
         liste_ffe_number = [element["Numero FFE"] for element in list_chessplayers]
-        #print(sorted(liste_ffe_number))
         ffe_number1 = str(ffe_number)
 
         if ffe_number1 in liste_ffe_number:
             print("\nCe numéro a déjà été enregistré dans ", txt)
             return None
-   
+
         else:
             print("Le numéro de licence va être enregistré.\n")
             return ffe_number1
@@ -52,31 +43,34 @@ def check_old_number_ffe(list_chessplayers: list, ffe_number: str, txt):
 
 def ffe_check(ffe_number, list_chessplayers: list, txt):
     """Valide le numéro FFE"""
-    if validate_format_ffe_number(ffe_number) :
+    if validate_format_ffe_number(ffe_number):
         if check_old_number_ffe(list_chessplayers, ffe_number, txt):
             return ffe_number
         else:
-            new_ffe_number = input("\nNouveau numéro FFE (ou appuyer sur Entrée pour terminer) : ")
+            new_ffe_number = input(
+                "\nNouveau numéro FFE (ou appuyer sur Entrée pour terminer) : "
+            )
             if not new_ffe_number:
                 print("")
-                """action = "choice_one"
-                other_choice(action)
-                #sys.exit(0)"""
             else:
                 return ffe_check(new_ffe_number, list_chessplayers, txt)
-    else :
-        new_ffe_number = input("\nNouveau numéro FFE (ou appuyer sur Entrée pour terminer) : ")
+    else:
+        new_ffe_number = input(
+            "\nNouveau numéro FFE (ou appuyer sur Entrée pour terminer) : "
+        )
         if not new_ffe_number:
             print("")
-        else :
+        else:
             return ffe_check(new_ffe_number, list_chessplayers, txt)
-   
+
 
 def register_player():
     """Création d'un joueur d'échecs en vérifiant le numéro FFE"""
     list_chessplayers = open_list(PLAYERS)
     ffe_number1 = input("\nNuméro de licence (du type AB12345) : ")
-    ffe_number = ffe_check(ffe_number1, list_chessplayers, txt="la base de données du club.")
+    ffe_number = ffe_check(
+        ffe_number1, list_chessplayers, txt="la base de données du club."
+    )
 
     if ffe_number is None:
         return print("fin d'enregistrement.\n")
@@ -107,8 +101,7 @@ def register_player():
         nom = info_chess_player["Nom"]
         prenom = info_chess_player["Prenom"]
         print(
-            "Parfait, {} {} vient d'être enregistré(e) dans la base de données du club.\n"
-            .format(
+            "Parfait, {} {} vient d'être enregistré(e) dans la base de données du club.\n".format(
                 prenom, nom
             )
         )
@@ -116,26 +109,25 @@ def register_player():
 
 def display_on_screen_players_club():
     """Afficher à l'écran, par ordre alphabétique, la base des joueurs du club"""
-    list_chessplayers_screen = open_list(PLAYERS)
+    try:
+        list_chessplayers_screen = open_list(PLAYERS)
 
-    screen_players = []
-    for chess_player_screen in list_chessplayers_screen:
-        chess_player_screen1 = (
-            chess_player_screen["Numero FFE"],
-            chess_player_screen["Nom"],
-            chess_player_screen["Prenom"],
-            chess_player_screen["Date de naissance"],
-        )
-        screen_players.append(chess_player_screen1)
+        screen_players = []
+        for chess_player_screen in list_chessplayers_screen:
+            chess_player_screen1 = (
+                chess_player_screen["Numero FFE"],
+                chess_player_screen["Nom"],
+                chess_player_screen["Prenom"],
+                chess_player_screen["Date de naissance"],
+            )
+            screen_players.append(chess_player_screen1)
 
-    screen_players_alpha = sorted(screen_players, key=lambda x: x[1])
+        screen_players_alpha = sorted(screen_players, key=lambda x: x[1])
 
-    print("Nombre de joueurs enregistrés : ", len(screen_players_alpha))
+        print("Nombre de joueurs enregistrés : ", len(screen_players_alpha), "\n")
 
-    for screen_player in screen_players_alpha:
-        print(*screen_player)
+        for screen_player in screen_players_alpha:
+            print(*screen_player)
 
-
-#register_player()
-# display_on_screen_players_club()
-
+    except FileNotFoundError:
+        print("La liste des joueurs du club n'a pas été encore créée")
