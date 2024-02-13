@@ -30,14 +30,13 @@ def create_file_folder_name(list_tournaments: list):
         )
     )
 
-    try:
-        choice_user is not None and 1 <= choice_user <= len(list_tournaments)
+    if choice_user is not None and choice_user != 0 and 1 <= choice_user <= len(list_tournaments):
         name_tournament = list_tournaments[choice_user - 1]
         print("\nVous avez choisi le tournoi : ", name_tournament)
         name_tournament_file_folder = name_tournament.replace(" ", "_")
         return name_tournament, name_tournament_file_folder
 
-    except IndexError:
+    else:
         print(
             "\nErreur de saisie. Ce choix ne fait pas partie de la liste. Veuillez recommencer.\n"
         )
