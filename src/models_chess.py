@@ -147,3 +147,7 @@ class Match(Round):
             "Noir": self.black,
             "score": self.score_player1_2,
         }
+
+class RoundAlreadyCreatedException(Exception):
+    def __init__(self, msg="Cette ronde existe déjà.", *args, **kwargs):
+        super().__init__(msg, *args, **kwargs)
