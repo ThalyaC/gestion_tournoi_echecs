@@ -38,5 +38,29 @@
         "Date de fin": "19/01/2024",
         "Nombre de rounds": "5",
         "Commentaire du directeur": "12 + 3"
+    },
+    {
+        "Nom": "15e Festival international de Vaujany",
+        "Adresse": "Espace Loisirs 38114 Vaujany",
+        "Date de debut": "jeudi 11 juillet 2024",
+        "Date de fin": " vendredi 19 juillet 2024",
+        "Nombre de rounds": "9",
+        "Commentaire du directeur": "1h40/40 - 40' + [30'']"
+    },
+    {
+        "Nom": "Coupe de Glace 2024 (-1800)",
+        "Adresse": "49 rue Charras 13007 Marseille",
+        "Date de debut": "10.02.2024",
+        "Date de fin": "11.02.2024",
+        "Nombre de rounds": "4",
+        "Commentaire du directeur": "50'+10' Homologue FIDE"
+    },
+    {
+        "Nom": "1er Open d'OpenClassrooms",
+        "Adresse": "Belmond Sanctuary Lodge - Machu Picchu, Perou ",
+        "Date de debut": "15.02.24",
+        "Date de fin": "15.02.24",
+        "Nombre de rounds": "4",
+        "Commentaire du directeur": "15"
     }
 ]
