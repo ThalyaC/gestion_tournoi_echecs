@@ -89,35 +89,42 @@ def new_round():
         return None
     else :
         number_of_rounds = tournament_number_round(list_tournaments, name_tournament)
-        print(f"Ce tournoi contient {number_of_rounds} rondes.")
+        print(f"\nCe tournoi contient {number_of_rounds} rondes.")
         path_tourmanent_rounds_file = (
         tournament_register1 + "/" + "rounds_" + tournament_register1)
     
-        number_round = input("Quelle round souhaitez-vous lancer?")
+        number_round = input("Quelle ronde souhaitez-vous lancer?")
         #new_round1(tournament_register1, name_tournament, number_of_rounds)
     
-       
-        result_list = open_list(path_tourmanent_rounds_file)
-        try : 
-            if result_list:
-                list_number_round = [element["Round"] for element in result_list]
-
-                if number_round in list_number_round:
-                    print("Cette ronde existe déjà")
-                    print(f"Actuellement, {list_number_round[0]} ronde(s) lancée(s)")
-                    return None
-
-                else:
-                    info_round_common, info_round, current_round = create_round(tournament_register1, name_tournament, number_round, number_of_rounds, path_tourmanent_rounds_file)
-                    round_other(result_list, path_tourmanent_rounds_file, current_round, info_round)
-        except FileNotFoundError:
-            result_list = []
-            info_round_common, info_round, _ = create_round(tournament_register1, name_tournament, number_round, number_of_rounds, path_tourmanent_rounds_file)
-            info_round_common, info_round = round_one(tournament_register1, number_round, result_list, path_tourmanent_rounds_file, info_round_common, info_round)
+    try :
+        result_list = open_list(path_tourmanent_rounds_file) 
     
-        #new_round1(tournament_register1, name_tournament, number_of_rounds, number_round, result_list, path_tourmanent_rounds_file)
+        list_number_round = [element["Round"] for element in result_list]
+
+        try :
+            0 < int(number_round) <= int(number_of_rounds)
+
+            if number_round in list_number_round:
+                print("\nCette ronde existe déjà")
+                print(f"\nActuellement, {list_number_round[0]} ronde(s) lancée(s)")
+                #return None
+            
+            
+
+            else:
+                info_round_common, info_round, current_round = create_round(tournament_register1, name_tournament, number_round, number_of_rounds, path_tourmanent_rounds_file)
+                round_other(result_list, path_tourmanent_rounds_file, current_round, info_round)
+                print(f"\nParfait, la ronde {number_round} du tournoi {name_tournament} vient d'être créée")
+
+        except ValueError:
+            print("\nSaisie erronée. Vous devez saisir un nombre entier inférieur ou égal en chiffres au nombre total de ce tournoi")
     
-    return number_round, tournament_register1
+    except FileNotFoundError:
+        result_list = []
+        info_round_common, info_round, _ = create_round(tournament_register1, name_tournament, number_round, number_of_rounds, path_tourmanent_rounds_file)
+        round_one(result_list, path_tourmanent_rounds_file, info_round_common, info_round)
+        print(f"\nParfait, la ronde {number_round} du tournoi {name_tournament} vient d'être créée")
+        
 
 def create_round(tournament_register1, name_tournament, number_round, number_of_rounds, path_tourmanent_rounds_file):
     list_players_round, number_players, players_file_tournament = (
@@ -130,7 +137,7 @@ def create_round(tournament_register1, name_tournament, number_round, number_of_
     end_date_round = ""
     end_hour = ""
 
-    print(f"La ronde {current_round} contient {number_players} joueurs.")
+    #print(f"\nLa ronde {current_round} contient {number_players} joueurs.")
 
     result = create_matches(
         number_round,
@@ -140,7 +147,7 @@ def create_round(tournament_register1, name_tournament, number_round, number_of_
         players_file_tournament,
         path_tourmanent_rounds_file,
     )
-    what_else(result)
+    #what_else(result)
     list_matches, number_tables = result
 
     """création d'une round"""
@@ -281,7 +288,7 @@ def check_round_previous(round_int, path_tourmanent_rounds_file, list_players_ro
                     )
         return list_sorted_by_score
     except:
-        print("Les scores de la ronde précédente n'ont pas tous été encore enregistrés")
+        print("\n Les scores de la ronde précédente n'ont pas tous été encore enregistrés")
         #return None
 
 
@@ -341,7 +348,7 @@ def simple_match1(list_ffe_round_next, i, n, list_matches, players_file_tourname
                     list_matches.append(info_match1)
 
                 except:
-                    print("cette ronde ne peut avoir lieu, pas assez de joueurs")
+                    print("\ncette ronde ne peut avoir lieu, pas assez de joueurs")
                     break
 
 
@@ -374,7 +381,7 @@ def exempt_match(
 
 
 
-def what_else(result):
+"""def what_else(result):
     "Vérifie que l'opération est possible"
     if result == None:
         print("Fin")
@@ -408,7 +415,7 @@ def not_in_list(ma_liste, black):
 
         else:
             x += 1
-
+"""
 
 def not_former_adversary(players_file_tournament, player1, player2):
     "Vérifie que les deux joueurs d'un match n'ont jamais joué auparavant ensemble"
@@ -418,15 +425,6 @@ def not_former_adversary(players_file_tournament, player1, player2):
         if key_former_adversary in player and player[key_former_adversary] == player1:
             list_former_adversary = player[key_former_adversary]
             not_in_list(list_former_adversary, player2)
-
-
-# score_recording()
-# new_round()
-# display_on_screen_players_round()
-# STOP
-# faire un fichier toolbox
-# affichage des rounds _ display
-# main
 
 
 def display_on_screen_round():
@@ -477,26 +475,21 @@ def display_round_3(list_round, display_round, list_players_round, list_chess_pl
             player_white1["Nom"],
             player_white1["Prenom"],
         )
-        # test1=len(player_white1["Nom"])+len(player_white1["Prenom"])
-        # print(test1)
         espace_number_white = 25 - (
             (len(player_white1["Nom"]) + len(player_white1["Prenom"]))
             + len(table["score"])
         )
-        # print(espace_number_white)
         espace = " "
         espaces_w = espace_number_white * espace
-        # print(len(table["score"]))
 
         player_black3 = table["Noir"]
         if player_black3 == "exempt":
             player_black = "exempt"
-            # print(len(player_black))
-            # print(len(table["score"]))
+
             espace_number_black = 25 - (len("exempt") + len(table["score"]))
             espace = " "
             espaces_b = espace_number_black * espace
-            # print(espace_number_black)
+
         else:
             player_black2 = seek_player_ffe(list_players_round, player_black3)
             player_black1 = seek_player_ffe(list_chess_players, player_black3)
@@ -509,7 +502,7 @@ def display_round_3(list_round, display_round, list_players_round, list_chess_pl
                 (len(player_black1["Nom"]) + len(player_black1["Prenom"]))
                 + len(table["score"])
             )
-            # print(espace_number_black)
+
             espace = " "
             espaces_b = espace_number_black * espace
 
