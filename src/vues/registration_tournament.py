@@ -1,27 +1,11 @@
 from models_chess import Tournament
-from toolbox import open_list, write_list, generic_check, no_special_char_word, EVENTS
-
-
-def is_integer_or_exit(user_response):
-    try:
-        if user_response is None or user_response == "":
-            return True
-        elif user_response != "0":
-            if int(user_response):
-                return True
-    except ValueError:
-        return False
-
+from toolbox import open_list, write_list, generic_check, no_special_char_word, is_integer_or_exit, no_empty_no_accent, EVENTS
 
 def register_tournament():
     """saisie et enregistrement dans un fichier json list_tournament des tournois"""
 
     tournament = Tournament(
-        name_tournament=no_special_char_word(
-            input(
-                "Nom du nouveau tournoi (suivi de l'année si annuel, du numero, si régulier): "
-            )
-        ),
+        name_tournament=generic_check("Nom du nouveau tournoi (suivi de l'année si annuel, du numero, si régulier): ", no_empty_no_accent, "Ce champs ne peut être vide"),
         place=no_special_char_word(input("Adresse : ")),
         start_date=input("Date de debut: "),
         end_date=input("Date de fin: "),
@@ -51,6 +35,7 @@ def register_tournament():
     list_tournaments.append(info_tournament)
 
     write_list(EVENTS, list_tournaments)
+    print (f"\nle tournoi {tournament.name} vient d'être enregistré")
 
 
 def display_on_screen_tournament_info():
