@@ -6,6 +6,7 @@ from toolbox import (
     is_integer,
     open_list,
     write_list,
+    condition_two_choice,
     PLAYERS,
     EVENTS
 )
@@ -135,27 +136,19 @@ def register_players_tournament():
         return None
 
 
-def condition_display(result):
-    try:
-        resultat = int(result)
-        1 <= resultat <= 2
-        return True
-    except ValueError:
-        return False
-
-
 def user_request_to_display(screen_players):
+    "Traite le choix de l'utilisateur (affichage alpha ou numérique)"
     result = generic_check(
         "\nSouhaitez-vous afficher la liste par ordre alphabétique(1) ou de classement(2)? ",
-        condition_display,
+        condition_two_choice,
         "Erreur de saisie."
     )
     if result == "1":
         screen_players_alpha = sorted(screen_players, key=lambda x: x[1])
         return screen_players_alpha
     elif result == "2":
-        screen_players_alpha = sorted(screen_players, key=lambda x: x[3], reverse=True)
-        return screen_players_alpha
+        screen_players_numeric = sorted(screen_players, key=lambda x: x[3], reverse=True)
+        return screen_players_numeric
     else:
         print("2 choix possibles : 1 ou 2 \n")
         return user_request_to_display(screen_players)
@@ -196,4 +189,3 @@ def display_on_screen_players_tournament():
             print(*screen_player)
     except FileNotFoundError:
         print("La liste des joueurs de ce tournoi n'a pas été encore créée")
-
