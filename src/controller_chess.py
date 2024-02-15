@@ -1,11 +1,10 @@
 from vues.chessplayers import register_player, display_on_screen_players_club
 from vues.registration_tournament import register_tournament, display_on_screen_tournament_info
 from vues.registration_chessplayers_tourmanent import register_players_tournament, display_on_screen_players_tournament
-from vues.pairing import new_round, display_on_screen_round
+from vues.pairing import new_round 
+from vues.display_round import display_on_screen_round
 from vues.scoring_matches import score_recording
 import sys
-#from vues import chessplayers, registration_tournament, registration_chessplayers_tourmanent, pairing
-
 
 
 def start_chess():
@@ -19,7 +18,6 @@ def start_chess():
     print("7.  Lancer une ronde d'un tournoi.")
     print("8.  Enregistrer les scores des joueurs.")
     print("9.  Afficher à l'écran une ronde d'un tournoi.")
-    print("10. Afficher les informations générales d'une ronde.")
     print("Ou  toute autre touche du clavier, si vous souhaitez quitter le programme.")
     choose_action = input("\nVotre choix : ")
 
@@ -48,14 +46,11 @@ def start_chess():
             print("\nVous avez choisi de lancer une ronde d'un tournoi\n")
             choice_action(new_round)
         case "8":
-            print("\nVous avez choisi d\n")
+            print("\nVous avez choisi d'enregistrer les scores des joueurs.\n")
             choice_action(score_recording)
         case "9":
             print("\nVous avez choisi d'afficher à l'écran une ronde d'un tournoi.\n")
             choice_action(display_on_screen_round)
-        case "10":
-            #print("\nVous avez choisi d\n")
-            pass
         case _:
             print("\nMerci d'avoir utilisé ce programme. Keep on Chessing!\n")
             sys.exit(0)
@@ -67,7 +62,7 @@ def choice_action(action):
 
 def other_choice(action):
     print("\nQue souhaitez-vous faire? Pour cela, tapez le numéro corespondant à l'action")
-    print("1. Refaire la même action?")
+    print("1. Refaire la même action")
     print("2. Revenir au menu")
     print("Ou  toute autre touche du clavier, si vous souhaitez quitter le programme.")
     response = input("\nVotre choix : ")
@@ -85,13 +80,4 @@ def other_choice(action):
 
 
 
-
-start_chess()
-#other_choice(chessplayers.register_player)
-
-#/root/gestion_tournoi_echecs/src/models_chess.py
-#display_on_screen_round()
-
-#
-#/root/gestion_tournoi_echecs/src/vues
 
