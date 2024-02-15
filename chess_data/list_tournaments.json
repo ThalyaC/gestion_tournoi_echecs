@@ -62,5 +62,13 @@
         "Date de fin": "15.02.24",
         "Nombre de rounds": "4",
         "Commentaire du directeur": "15"
+    },
+    {
+        "Nom": "Tournoi de Paris",
+        "Adresse": "Arc de Triomphe",
+        "Date de debut": "15.02.2024",
+        "Date de fin": "16.02.2024",
+        "Nombre de rounds": "4",
+        "Commentaire du directeur": "15 + 5"
     }
 ]
