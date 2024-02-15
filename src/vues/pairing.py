@@ -54,7 +54,7 @@ def new_round():
         print(f"\nCe tournoi contient {number_of_rounds} rondes.")
         path_tourmanent_rounds_file = (
         tournament_register1 + "/" + "rounds_" + tournament_register1)
-        list_chessplayers_tournament, number_players, players_file_tournament = create_list_players_tournament(tournament_register1)
+        _, number_players, _ = create_list_players_tournament(tournament_register1)
         number_round = input("Quelle ronde souhaitez-vous lancer?")
         number_max_rounds = number_possible_round_players(number_players)
         if int(number_of_rounds)>=number_max_rounds:
@@ -153,7 +153,7 @@ def create_round(tournament_register1, name_tournament, number_round, number_of_
 def round_one(result_list, path_tourmanent_rounds_file, info_round_common, info_round):
     """1ère round - enregistre une seule fois les informations générales du tournoi, puis de la 1ère round"""
     
-    # update_current_round = current_round
+    
     result_list.append(info_round_common)
     result_list.append(info_round)
     write_list(path_tourmanent_rounds_file, result_list)
@@ -186,8 +186,7 @@ def create_matches(
     """
     round_int = int(number_round)
     number_of_rounds_int = int(number_of_rounds)
-    number_players_int = int(number_players)
-    number_tables = number_players_int // 2 + number_players % 2
+    number_tables = int(number_players) // 2 + number_players % 2
     list_ffe_round = []
     list_matches = []
     list_ffe_round = [element["Numero FFE"] for element in list_players_round]
