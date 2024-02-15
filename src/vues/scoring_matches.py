@@ -1,14 +1,12 @@
-#import sys
 from datetime import datetime
 
-#from models_chess import Round, Match
 from toolbox import (
     seek_player_ffe,
     open_list,
-    write_list
+    write_list,
+    generic_check
 )
 from vues.registration_chessplayers_tourmanent import which_tournament
-
 
 
 def score_recording():
@@ -28,13 +26,10 @@ def score_recording():
     list_info_current_tournament = open_list(path_tourmanent_rounds_file)
 
     if 0<= number_round_score1 < len(list_info_current_tournament):
-        round_info_total = list_info_current_tournament[number_round_score1]
-        print(round_info_total)     
+        round_info_total = list_info_current_tournament[number_round_score1]    
         table_score1 = input("Quelle table? (tapez juste un numéro)")
         list_pairing = round_info_total['Liste des appariements']
-        print(list_pairing)
         list_pairing_tables = [element["Table"] for element in list_pairing]
-        print(list_pairing_tables)
         if int(table_score1) in list_pairing_tables:
             if check_score_empty(table_score1, list_pairing) is None:
                 print("Le score de cette table a déjà été enregistré")
@@ -54,23 +49,24 @@ def score_recording():
         )
         
         return None
+
+
 def check_score_empty(table_score1, list_pairing):
-    
+    """Vérifie que le score n'a pas encore été enregistré"""
+
     info_pairing = list_pairing[int(table_score1) - 1]
-    print(info_pairing)
     result_check_empty = info_pairing["score"]
     empty = " "
     if result_check_empty == empty:
         return True
 
+
 def register_table_score(round_info_total, list_pairing, table_score1, tournament_register1,path_tourmanent_rounds_file, list_info_current_tournament):
     remaining_tables1 = round_info_total["Nombre de tables en cours de jeu"]
+    """Enregistre dans le fichier round du tournoi les scores"""
 
-    #list_pairing = round_info_total["Liste des appariements"]
     info_pairing = list_pairing[int(table_score1) - 1]
-    print(info_pairing)
-
-    add_score = input("Entrez le score (1-0,0-1 ou 0.5-0.5)")
+    add_score = generic_check("Entrez le score (1-0,0-1 ou 0.5-0.5)", check_points_entered, "Saisie erronée. Veuillez recommencer")
     info_pairing["score"] = add_score
 
     round_info_total["Nombre de tables en cours de jeu"] = remaining_tables1 - 1
@@ -88,8 +84,17 @@ def register_table_score(round_info_total, list_pairing, table_score1, tournamen
     write_list(path_tourmanent_rounds_file, list_info_current_tournament)
 
 
+def check_points_entered(points):
+    """Valide la saisie des scores"""
+
+    list_points = ["0-1", "1-0", "0.5-0.5"]
+    result = points in list_points
+    return result
+
+
 def register_individual_score(add_score, info_pairing, tournament_register1):
-    """inscription et modification des scores dans la liste des joueurs"""
+    """inscription et modification des scores dans la liste des joueurs du tournoi"""
+
     individual_score = add_score.split("-")
     score_player1_2 = float(individual_score[0])
     score_player2_2 = float(individual_score[1])
