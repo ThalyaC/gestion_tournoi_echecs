@@ -80,31 +80,34 @@ def register_player():
         new_first_name = no_special_char_word(input("Prénom : "))
         new_date_of_birth = input("Date de naissance : ")
 
-        """création d'un joueur d'échecs"""
-        chess_player = ChessPlayer(
-            name=new_name,
-            first_name=new_first_name,
-            date_of_birth=new_date_of_birth,
-            ffe_number=ffe_number,
-        )
-
-        info_chess_player = {
-            "Nom": chess_player.name,
-            "Prenom": chess_player.first_name,
-            "Date de naissance": chess_player.date_of_birth,
-            "Numero FFE": chess_player.ffe_number,
-        }
-
-        list_chessplayers.append(info_chess_player)
-
-        write_list(PLAYERS, list_chessplayers)
-        nom = info_chess_player["Nom"]
-        prenom = info_chess_player["Prenom"]
-        print(
-            "Parfait, {} {} vient d'être enregistré(e) dans la base de données du club.\n".format(
-                prenom, nom
+        if 0<len(new_name) and 0<len(new_first_name) and 0<len(new_date_of_birth):
+            """création d'un joueur d'échecs"""
+            chess_player = ChessPlayer(
+                name=new_name,
+                first_name=new_first_name,
+                date_of_birth=new_date_of_birth,
+                ffe_number=ffe_number,
             )
-        )
+
+            info_chess_player = {
+                "Nom": chess_player.name,
+                "Prenom": chess_player.first_name,
+                "Date de naissance": chess_player.date_of_birth,
+                "Numero FFE": chess_player.ffe_number,
+            }
+
+            list_chessplayers.append(info_chess_player)
+
+            write_list(PLAYERS, list_chessplayers)
+            nom = info_chess_player["Nom"]
+            prenom = info_chess_player["Prenom"]
+            print(
+                "Parfait, {} {} vient d'être enregistré(e) dans la base de données du club.\n".format(
+                    prenom, nom
+                )
+            )
+        else :
+            print("Au moins un des 3 champs est vide, ce joueur ne peut être enregitré")
 
 
 def display_on_screen_players_club():
