@@ -29,12 +29,19 @@ def write_list(name_file, list_name):
 
 
 def what_else(result):
-    "Vérifie que l'opération est possible"
+    "Vérifie que l'opération n'est pas None"
     if result == None:
         print("Fin")
         sys.exit(0)
     else :
         pass
+
+def what_else1(result):
+    try :
+        result != None
+        pass
+    except :
+        return None
 
 
 def does_list_exist(result):
@@ -65,6 +72,7 @@ def not_in_list(ma_liste,black):
     
 
 def generic_check(data_requested, condition, error_message):
+    "Lie un input à une condition et si necessaire un message d'erreur"
     while True:
         user_response = input(data_requested)
         if condition(user_response):
@@ -72,18 +80,47 @@ def generic_check(data_requested, condition, error_message):
         else:
             print(error_message)
 
-
+# conditions pour generic_check
 def is_integer(user_response):
+    """Vérifie que l'utilisateur entre un entier"""
     try:
         int(user_response)
         return True
     except ValueError:
         return False
 
+def is_integer_or_exit(user_response):
+    """ Vérifie que l'utilisateur entre soit rien soit un entier hors 0"""
+    try:
+        if user_response is None or user_response == "":
+            return True
+        elif user_response != "0":
+            if int(user_response):
+                return True
+    except ValueError:
+        return False
+
+def condition_two_choice(result):
+    "vérifie que l'utilisateur a saisi 1 ou 2"
+    try:
+        resultat = int(result)
+        1 <= resultat <= 2
+        return True
+    except ValueError:
+        return False
+
+def no_empty_no_accent(result):
+    """Vérifie que la chaine n'est pas vide et enlève les caractères psciaux"""
+    if 0<len(result):
+        no_special_char_word(result)
+        return True
+    else:
+        return False
+    
 
 # Les 2 fonctions ont été récupérées sur Foxxpy - Mathématiques et algorithmie, ai rajouté oe + @
 def no_special_char(char):
-    """Retire l'accent d'un caractère"""
+    """Remplace l'accent d'un caractère + oe et @"""
     table_correspondance = {
                             192 : 65,
                             193 : 65,
@@ -161,13 +198,10 @@ def no_special_char(char):
 
 
 def no_special_char_word(string):
-    """Retire tous les accents d'un mot"""
+    """Retire tous les accents d'un mot + oe et @"""
     new_string = ""
     for char in string:
         new_string += no_special_char(char)
 
     return new_string
 
-#print(no_special_char_word("L'Étourneau a chanté d'août à Noël @ Voix ambiguë d’un cœur qui, au zéphyr, préfÈre les jattes de kiwis"))
-#test = no_special_char_word(input("test"))
-#print (test)
