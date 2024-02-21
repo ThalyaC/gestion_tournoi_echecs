@@ -1,3 +1,5 @@
+"""Afficher à l'écran les rounds"""
+
 from models_chess import Round
 from toolbox import (
     seek_player_ffe,
@@ -42,7 +44,7 @@ def display_on_screen_round():
         )
 
 
-def display_round_3(content_round, list_players_round, list_chess_players):
+def display_round_3(content_round: dict, list_players_round: list, list_chess_players: list):
     """Affiche les matches. Lie les matches aux noms des joueurs et à leur score actuel"""
 
     list_pairing1 = content_round["Liste des appariements"]
@@ -86,7 +88,7 @@ def display_round_3(content_round, list_players_round, list_chess_players):
 
             espace = " "
             espaces_b = espace_number_black * espace
-        
+
         print(
             "\nTable",
             number_table_screen,
@@ -101,7 +103,8 @@ def display_round_3(content_round, list_players_round, list_chess_players):
             "\n",
         )
 
-def display_round_2(content_round):
+
+def display_round_2(content_round: dict):
     """Indique les infos générales de la ronde"""
 
     etat = content_round["Etat"]
@@ -111,4 +114,3 @@ def display_round_2(content_round):
     hour_end = content_round["Heure de fin"]
     number_tables_playing = content_round["Nombre de tables en cours de jeu"]
     return print(f"Etat : {etat}\nCommencé le : {date_start} à {hour_start} \nFini le : {date_end} à {hour_end} \nNombre de tables en cours de jeu {number_tables_playing}")
-

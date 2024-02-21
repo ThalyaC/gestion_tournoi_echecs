@@ -1,3 +1,6 @@
+"""Enregistrement d'un joueur dans un tournoi"""
+
+
 from os import mkdir
 from models_chess import PlayerTournament
 from toolbox import (
@@ -44,7 +47,7 @@ def create_file_folder_name(list_tournaments: list):
         return create_file_folder_name(list_tournaments)
 
 
-def print_seek_player(seek_player: dict):  ##
+def print_seek_player(seek_player: dict):
     "Affiche à l'écran le joueur à inscrire"
     print("\nPersonne à inscrire : ")
     for key, value in seek_player.items():
@@ -102,13 +105,15 @@ def register_players_tournament():
     """Inscrit un joueur dans un tournoi"""
 
     _, tournament_register1, _ = which_tournament()
-    file_tournament = tournament_register1 + "/" + "players_" + tournament_register1
+    file_tournament = tournament_register1 + \
+        "/" + "players_" + tournament_register1
     list_players_tournament = folder_tournament_players(
         file_tournament, tournament_register1
     )
     ffe_number1 = input("\nNuméro de licence (du type AB12345) : ")
-    try :
-        ffe_number_register = ffe_check(ffe_number1, list_players_tournament, txt="ce tournoi")
+    try:
+        ffe_number_register = ffe_check(
+            ffe_number1, list_players_tournament, txt="ce tournoi")
         list_chessplayers = open_list(PLAYERS)
         seek_player = seek_player_ffe(list_chessplayers, ffe_number_register)
 
@@ -125,7 +130,8 @@ def register_players_tournament():
             if response == "1":
                 register_player()
                 list_chessplayers = open_list(PLAYERS)
-                seek_player = seek_player_ffe(list_chessplayers, ffe_number_register)
+                seek_player = seek_player_ffe(
+                    list_chessplayers, ffe_number_register)
                 registration_data_chessplayer_tournament(
                     seek_player, list_players_tournament, file_tournament
                 )
@@ -147,7 +153,8 @@ def user_request_to_display(screen_players):
         screen_players_alpha = sorted(screen_players, key=lambda x: x[1])
         return screen_players_alpha
     elif result == "2":
-        screen_players_numeric = sorted(screen_players, key=lambda x: x[3], reverse=True)
+        screen_players_numeric = sorted(
+            screen_players, key=lambda x: x[3], reverse=True)
         return screen_players_numeric
     else:
         print("2 choix possibles : 1 ou 2 \n")
@@ -159,7 +166,8 @@ def display_on_screen_players_tournament():
     list_tournaments = open_list(EVENTS)
     list_tournaments_nom = [element["Nom"] for element in list_tournaments]
     _, tournament_register1 = create_file_folder_name(list_tournaments_nom)
-    tournament_register = tournament_register1 + "/" + "players_" + tournament_register1
+    tournament_register = tournament_register1 + \
+        "/" + "players_" + tournament_register1
 
     try:
         list_players_tournament = open_list(tournament_register)
@@ -184,7 +192,8 @@ def display_on_screen_players_tournament():
             )
             screen_players.append(screen_player1)
         screen_players_alpha = user_request_to_display(screen_players)
-        print("\nNombre de joueurs enregistrés : ", len(screen_players_alpha), "\n")
+        print("\nNombre de joueurs enregistrés : ",
+              len(screen_players_alpha), "\n")
         for screen_player in screen_players_alpha:
             print(*screen_player)
     except FileNotFoundError:

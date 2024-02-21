@@ -1,15 +1,18 @@
+"""Enregistrement d'un joueur dans la base de données du club"""
+
+
 from models_chess import ChessPlayer
 from toolbox import write_list, open_list, no_special_char_word, PLAYERS
 
 
-def validate_format_ffe_number(ffe_number) -> str | None:
+def validate_format_ffe_number(ffe_number: str) -> str | None:
     """Vérifie le format du numéro de licence type : AB12345"""
 
     if (
         len(ffe_number) == 7
         and ffe_number[:2].isalpha()
         and ffe_number.isupper()
-        and ffe_number[2 - 7 :].isdigit()
+        and ffe_number[2 - 7:].isdigit()
     ):
         print("Le numéro de licence est conforme.")
         return ffe_number
@@ -21,10 +24,11 @@ def validate_format_ffe_number(ffe_number) -> str | None:
         return None
 
 
-def check_old_number_ffe(list_chessplayers: list, ffe_number: str, txt):
+def check_old_number_ffe(list_chessplayers: list, ffe_number: str, txt: str):
     """Vérifie si le numéro FFE existe déjà dans la liste des joueurs"""
     try:
-        liste_ffe_number = [element["Numero FFE"] for element in list_chessplayers]
+        liste_ffe_number = [element["Numero FFE"]
+                            for element in list_chessplayers]
         ffe_number1 = str(ffe_number)
 
         if ffe_number1 in liste_ffe_number:
@@ -41,7 +45,7 @@ def check_old_number_ffe(list_chessplayers: list, ffe_number: str, txt):
         return ffe_number1
 
 
-def ffe_check(ffe_number, list_chessplayers: list, txt):
+def ffe_check(ffe_number: str, list_chessplayers: list, txt: str):
     """Valide le numéro FFE"""
     if validate_format_ffe_number(ffe_number):
         if check_old_number_ffe(list_chessplayers, ffe_number, txt):
@@ -80,7 +84,7 @@ def register_player():
         new_first_name = no_special_char_word(input("Prénom : "))
         new_date_of_birth = input("Date de naissance : ")
 
-        if 0<len(new_name) and 0<len(new_first_name) and 0<len(new_date_of_birth):
+        if 0 < len(new_name) and 0 < len(new_first_name) and 0 < len(new_date_of_birth):
             """création d'un joueur d'échecs"""
             chess_player = ChessPlayer(
                 name=new_name,
@@ -106,7 +110,7 @@ def register_player():
                     prenom, nom
                 )
             )
-        else :
+        else:
             print("Au moins un des 3 champs est vide, ce joueur ne peut être enregitré")
 
 
@@ -127,7 +131,8 @@ def display_on_screen_players_club():
 
         screen_players_alpha = sorted(screen_players, key=lambda x: x[1])
 
-        print("Nombre de joueurs enregistrés : ", len(screen_players_alpha), "\n")
+        print("Nombre de joueurs enregistrés : ",
+              len(screen_players_alpha), "\n")
 
         for screen_player in screen_players_alpha:
             print(*screen_player)
