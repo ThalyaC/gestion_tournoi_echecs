@@ -8,7 +8,7 @@ Résultat attendu : L'application gère de A à Z la mise en place d'un tournoi 
 ## Installation
 ### Prérequis
 + Python3
-+ Pour les dépendances : consulter requirements.txt
++ Pour les dépendances : consulter src/requirements.txt
 + Terminal
 ### Installation étape par étape
 +	Sur GitHub :
@@ -30,7 +30,7 @@ Exemple : `git clone https://github.com/ThalyaC/gestion_tournoi_echecs.git`
 `pip install -r requirements.txt`
 ## UTILISATION 
 ### POUR EXÉCUTER LE PROGRAMME
-Saisir  `python3 lancement.py`
+Saisir  `python3 src/lancement.py`
 ### RÉSULTAT ATTENDU
 1.  Enregistrer un joueur dans la base de données du club.
 2.  Afficher à l'écran la base de données des joueurs.
@@ -46,3 +46,5 @@ Avec possibilité à chaque fois de:
 + Refaire la même action
 + Revenir au menu
 + Ou  toute autre touche du clavier, pour quitter le programme.
+### POUR GÉNÉRER UN RAPPORT FLAKE 8
+Dans le terminal, saisir `flake8 --format=html --htmldir=flake-report`
