@@ -2,7 +2,15 @@
 
 
 from models_chess import Tournament
-from toolbox import open_list, write_list, generic_check, no_special_char_word, is_integer_or_exit, no_empty_no_accent, EVENTS
+from toolbox import (
+    open_list,
+    write_list,
+    generic_check,
+    no_special_char_word,
+    is_integer_or_exit,
+    no_empty_no_accent,
+    EVENTS
+)
 
 
 def register_tournament():
@@ -10,7 +18,8 @@ def register_tournament():
 
     tournament = Tournament(
         name_tournament=generic_check(
-            "Nom du nouveau tournoi (suivi de l'année si annuel, du numero, si régulier): ", no_empty_no_accent, "Ce champs ne peut être vide"),
+            "Nom du nouveau tournoi (suivi de l'année si annuel, du numero, si régulier): ",
+            no_empty_no_accent, "Ce champs ne peut être vide"),
         place=no_special_char_word(input("Adresse : ")),
         start_date=input("Date de debut: "),
         end_date=input("Date de fin: "),

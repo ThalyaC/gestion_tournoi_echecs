@@ -54,11 +54,9 @@ def new_round():
         print("Ce tournoi ne peut être lancé sans joueur")
         return None
     else:
-        number_of_rounds = tournament_number_round(
-            list_tournaments, name_tournament)
+        number_of_rounds = tournament_number_round(list_tournaments, name_tournament)
         print(f"\nCe tournoi contient {number_of_rounds} rondes.")
-        path_tourmanent_rounds_file = (
-            tournament_register1 + "/" + "rounds_" + tournament_register1)
+        path_tourmanent_rounds_file = (tournament_register1 + "/" + "rounds_" + tournament_register1)
         _, number_players, _ = create_list_players_tournament(
             tournament_register1)
         number_round = input("Quelle ronde souhaitez-vous lancer?")
@@ -77,10 +75,10 @@ def new_round():
 
             if number_round in list_number_round:
                 print("\nCette ronde existe déjà")
-                print(
-                    f"\nActuellement, {list_number_round[0]} ronde(s) lancée(s)")
+                print(f"\nActuellement, {list_number_round[0]} ronde(s) lancée(s)")
             elif not check_round_previous(number_round, result_list):
-                print("\n Cette ronde ne peut pas être lancée. Les scores de la ronde précédente n'ont pas tous été encore enregistrés.")
+                print("""\n Cette ronde ne peut pas être lancée.
+                      Les scores de la ronde précédente n'ont pas tous été encore enregistrés.""")
 
             elif int(number_round) > number_max_rounds:
                 print("Il n'y a pas assez de joueurs pour lancer cette ronde.")
@@ -88,13 +86,12 @@ def new_round():
             else:
                 info_round_common, info_round, current_round = create_round(
                     tournament_register1, name_tournament, number_round, number_of_rounds, path_tourmanent_rounds_file)
-                round_other(result_list, path_tourmanent_rounds_file,
-                            current_round, info_round)
-                print(
-                    f"\nParfait, la ronde {number_round} du tournoi {name_tournament} vient d'être créée")
+                round_other(result_list, path_tourmanent_rounds_file, current_round, info_round)
+                print(f"\nParfait, la ronde {number_round} du tournoi {name_tournament} vient d'être créée")
 
         except ValueError:
-            print("\nSaisie erronée. Vous devez saisir un nombre entier inférieur ou égal en chiffres au nombre total de ce tournoi")
+            print("\nSaisie erronée.Vous devez saisir un nombre entier "
+                  "inférieur ou égal en chiffres au nombre total de ce tournoi")
 
     except FileNotFoundError:
         result_list = []
@@ -117,7 +114,13 @@ def number_possible_round_players(number_players: str):
         return number_max_round
 
 
-def create_round(tournament_register1: str, name_tournament: str, number_round: str, number_of_rounds: str, path_tourmanent_rounds_file: str):
+def create_round(
+    tournament_register1: str,
+    name_tournament: str,
+    number_round: str,
+    number_of_rounds: str,
+    path_tourmanent_rounds_file: str
+):
     """Génére les informations générales d'une ronde"""
     list_players_round, number_players, players_file_tournament = (
         create_list_players_tournament(tournament_register1)
@@ -186,12 +189,12 @@ def create_matches(
 ):
     """Création des matches:
     1.  Création des appariements de la première round de manière aléatoire;
-    2.  Vérifie, si nécessaire, que les scores de la round précédente ont 
-        tous été enregistrés;
+    2.  Vérifie, si nécessaire, que les scores de la round précédente ont
+    tous été enregistrés;
     3.  Création des autres rounds en fonction des résultats des joueurs et
-        des adversaires précédents;
-    4.  En cas de nombre impair des joueurs, génére un exempt et enregistre 
-        automatiquement le score.
+    des adversaires précédents;
+    4.  En cas de nombre impair des joueurs, génére un exempt et enregistre
+    automatiquement le score.
     """
     round_int = int(number_round)
     number_of_rounds_int = int(number_of_rounds)
@@ -310,7 +313,7 @@ def simple_match1(list_ffe_round_next, i, n, list_matches, players_file_tourname
                 list_former_adversary, list_ffe_round_next[i + 1]
             )
 
-            if result_adversary != None:
+            if result_adversary is not None:
                 black = list_ffe_round_next[i + 1]
                 table = n
                 match1 = Match(table=table, white=white,
@@ -330,7 +333,7 @@ def simple_match1(list_ffe_round_next, i, n, list_matches, players_file_tourname
                         result_adversary = not_in_list(
                             list_former_adversary, list_ffe_round_next[j]
                         )
-                        if result_adversary != None:
+                        if result_adversary is not None:
                             black1 = list_ffe_round_next[j]
                             black = str(black1)
                             list_ffe_round_next.pop(j)
@@ -350,7 +353,7 @@ def simple_match1(list_ffe_round_next, i, n, list_matches, players_file_tourname
 def exempt_match(
     list_ffe_round, list_players_round, list_matches, players_file_tournament, i, n
 ):
-    """Si le nombre de joueurs est impair, création d'une dernière table avec 
+    """Si le nombre de joueurs est impair, création d'une dernière table avec
     un joueur exempté, enregistrement automatique du score 0.5-_"""
     white = list_ffe_round[i]
     black = "exempt"

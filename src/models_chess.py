@@ -32,9 +32,9 @@ class Tournament:
         self.place = place
         self.start_date = start_date
         self.end_date = end_date
-        if number_of_rounds is None or number_of_rounds =="":
+        if number_of_rounds is None or number_of_rounds == "":
             self.number_of_rounds = "4"
-        else :
+        else:
             self.number_of_rounds = number_of_rounds
         self.director_comment = director_comment
         self.rounds = []
@@ -113,7 +113,8 @@ class Round:
                     start_hour=round_data.get("Heure de lancement"),
                     end_date_round=round_data.get("Round finie le"),
                     end_hour=round_data.get("Heure de fin"),
-                    number_tables=round_data.get("Nombre de tables en cours de jeu"),
+                    number_tables=round_data.get(
+                        "Nombre de tables en cours de jeu"),
                     list_matches=round_data.get("Liste des appariements"),
                 )
                 rounds.append(round)
@@ -128,7 +129,8 @@ class Round:
                 start_hour=round_data.get("Heure de lancement"),
                 end_date_round=round_data.get("Round finie le"),
                 end_hour=round_data.get("Heure de fin"),
-                number_tables=round_data.get("Nombre de tables en cours de jeu"),
+                number_tables=round_data.get(
+                    "Nombre de tables en cours de jeu"),
                 list_matches=round_data.get("Liste des appariements"),
             )
 
@@ -147,6 +149,7 @@ class Match(Round):
             "Noir": self.black,
             "score": self.score_player1_2,
         }
+
 
 class RoundAlreadyCreatedException(Exception):
     def __init__(self, msg="Cette ronde existe déjà.", *args, **kwargs):
